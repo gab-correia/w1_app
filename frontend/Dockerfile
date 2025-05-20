@@ -1,24 +1,16 @@
-# Etapa de build
-FROM node:18-alpine AS build
+# Dockerfile.dev
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Copia arquivos de dependência e instala
+# Instala dependências
 COPY package*.json ./
 RUN npm install
 
-# Copia todo o restante e roda o build do Vite
+# Copia o restante do projeto
 COPY . .
-RUN npm run build
 
-# Etapa de produção: usa Nginx para servir o app
-FROM nginx:stable-alpine
+# Expõe a porta do Vite Dev Server
+EXPOSE 5173
 
-# Copia o build final para a pasta do Nginx
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Exponha a porta do Nginx
-EXPOSE 4000
-
-# Comando padrão do Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "dev", "--", "--host"]

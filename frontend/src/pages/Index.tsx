@@ -8,7 +8,7 @@ import HoldingProgress from "@/components/dashboard/HoldingProgress";
 import PatrimonyOverview from "@/components/dashboard/PatrimonyOverview";
 
 const Index = () => {
-  const patrimonioTotal = 12500000;
+  const patrimonioTotal = 122500000;
   const patrimonioAnterior = 11800000;
   const crescimentoPercentual = ((patrimonioTotal - patrimonioAnterior) / patrimonioAnterior) * 100;
   

@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch'); // instale esse pacote com npm
+const fetch = require('node-fetch');
 require('dotenv').config();
+const pool = require('./db'); // <- novo
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,17 @@ app.post('/api/chat', async (req, res) => {
   } catch (error) {
     console.error('Erro ao consultar Flowise:', error);
     res.status(500).json({ error: 'Erro no servidor' });
+  }
+});
+
+// Nova rota para testar o banco
+app.get('/api/users', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM users'); // 'users' deve existir no seu init.sql
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao acessar o banco:', error);
+    res.status(500).json({ error: 'Erro ao acessar o banco de dados' });
   }
 });
 

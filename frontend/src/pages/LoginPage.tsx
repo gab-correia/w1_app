@@ -54,7 +54,7 @@ const LoginPage = () => {
         return;
       }
       
-      // Mock successful login - In a real app, this would verify credentials
+      // Guarda valor de userType e isLoggedIn
       localStorage.setItem("userType", "client");
       localStorage.setItem("isLoggedIn", "true");
       
@@ -153,14 +153,14 @@ const LoginPage = () => {
     });
   };
   
-  // Show registration form or login form
+  // Mostra o campo de cadastro, caso botão de cadastro seja apertado
   if (showClientRegister) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <img src="/W1.png" alt="W1 Consultoria" className="h-12 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-w1-teal">W1 Consultoria Patrimonial</h1>
+            <h1 className="text-2xl font-bold text-w1-teal">Consultoria Patrimonial</h1>
             <p className="text-gray-600">Crie sua conta para acessar nossos serviços</p>
           </div>
           
@@ -248,13 +248,13 @@ const LoginPage = () => {
     );
   }
 
-  // Regular login screen
+  // Mostra tela de login normal caso não for cadastro
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <img src="/w1-logo.svg" alt="W1 Consultoria" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-w1-teal">W1 Consultoria Patrimonial</h1>
+          <img src="/W1.png" alt="W1 Consultoria" className="h-12 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-w1-teal">Consultoria Patrimonial</h1>
           <p className="text-gray-600">Faça login para acessar sua conta</p>
         </div>
 

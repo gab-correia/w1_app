@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Index from "./pages/Index";
+import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import MobileLayout from "./components/layout/MobileLayout";
 import PatrimonioPage from "./pages/PatrimonioPage";
@@ -80,7 +80,7 @@ const App = () => {
             {/* Protected routes inside layout */}
             <Route element={<MobileLayout />}>
               {/* Client routes */}
-              <Route path="/" element={<ProtectedRoute element={<Index />} allowedUserType="client" />} />
+              <Route path="/" element={<ProtectedRoute element={<Home />} allowedUserType="client" />} />
               <Route path="/patrimonio" element={<ProtectedRoute element={<PatrimonioPage />} allowedUserType="client" />} />
               <Route path="/holdings" element={<ProtectedRoute element={<HoldingsPage />} allowedUserType="client" />} />
               <Route path="/holdings/criar" element={<ProtectedRoute element={<CriarHoldingPage />} allowedUserType="client" />} />

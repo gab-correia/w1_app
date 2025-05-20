@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           <Menu className="h-5 w-5" />
         </Button>
         <div className="hidden md:block">
-          <img src="/w1-logo.svg" alt="W1 Logo" className="h-8" />
+          <img src="/W1_white.png" alt="W1 Logo" className="h-8" />
         </div>
       </div>
 

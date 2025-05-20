@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import HoldingProgress from "@/components/dashboard/HoldingProgress";
 import PatrimonyOverview from "@/components/dashboard/PatrimonyOverview";
 
-const Index = () => {
+const Home = () => {
   const patrimonioTotal = 122500000;
   const patrimonioAnterior = 11800000;
   const crescimentoPercentual = ((patrimonioTotal - patrimonioAnterior) / patrimonioAnterior) * 100;
@@ -35,11 +35,11 @@ const Index = () => {
                 {crescimentoPercentual >= 0 ? '+' : ''}{crescimentoPercentual.toFixed(1)}%
               </p>
             </div>
-            <p className="text-sm mt-1 text-white/80">vs. mês anterior</p>
+            
             
             <div className="mt-4">
               <Link to="/patrimonio">
-                <Button variant="outline" className="text-white border-white hover:bg-white/20 hover:text-white">
+                <Button className="text-white border-white hover:bg-white/20 hover:text-white">
                   Ver detalhes
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
@@ -201,4 +201,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Home;

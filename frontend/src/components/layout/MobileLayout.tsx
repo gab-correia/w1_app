@@ -28,7 +28,7 @@ const MobileLayout = () => {
             </SheetContent>
           </Sheet>
           <Link to="/">
-            <img src="/w1-logo.svg" alt="W1 Logo" className="h-8" />
+            <img src="/W1_White.png" alt="W1 Logo" className="h-8" />
           </Link>
         </div>
         

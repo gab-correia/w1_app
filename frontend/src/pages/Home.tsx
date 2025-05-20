@@ -5,7 +5,6 @@ import { ArrowRight, Briefcase, FileText, Target, Users } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import EstagioHolding from "@/components/dashboard/HoldingProgress";
-import PatrimonyOverview from "@/components/dashboard/PatrimonyOverview";
 
 const Home = () => {
   const patrimonioTotal = 122500000;
@@ -22,6 +21,7 @@ const Home = () => {
   };
 
   return (
+
     <div className="space-y-6">
       
       <h1 className="text-2xl font-bold text-w1-teal">Dashboard</h1>

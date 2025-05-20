@@ -4,18 +4,20 @@ import { CheckCircle, Circle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Link } from "react-router-dom";
 
-const HoldingProgress: React.FC = () => {
+const EstagioHolding: React.FC = () => {
   // Mostra o estagio atual e os processos já concluidos da holding
-  const holdingStages = [
+  const EstagioHolding = [
     { 
       name: 'Planejamento Estratégico',
       complete: true,
+      
       tasks: [
         { name: 'Definir objetivos', complete: true },
         { name: 'Levantamento patrimonial', complete: true },
         { name: 'Identificação de sócios', complete: true },
-        { name: 'Agendamento de consultoria', complete: true },
+        { name: 'Agendamento de consultoria', complete: true},
       ] 
     },
     { 
@@ -55,8 +57,8 @@ const HoldingProgress: React.FC = () => {
   ];
 
   // Calculate overall progress
-  const totalSteps = holdingStages.length;
-  const completedSteps = holdingStages.filter(stage => stage.complete).length;
+  const totalSteps = EstagioHolding.length;
+  const completedSteps = EstagioHolding.filter(stage => stage.complete).length;
   const progressPercentage = Math.round((completedSteps / totalSteps) * 100);
   
   return (
@@ -68,7 +70,7 @@ const HoldingProgress: React.FC = () => {
       
       <CardContent className="pt-6">
         <div className="mb-4">
-          <div className="flex justify-between text-sm mb-1">
+          <div className="flex justify-between text-large mb-1">
             <span>Progresso total</span>
             <span className="font-medium">{progressPercentage}%</span>
           </div>
@@ -77,8 +79,8 @@ const HoldingProgress: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-6 mt-6">
-          {holdingStages.map((stage, index) => (
+        <div className="mt-12 flex flex-wrap justify-between">
+          {EstagioHolding.map((stage, index) => (
             <div key={index} className={`flex ${stage.current ? 'animate-fade-in' : ''}`}>
               <div className="mr-4 flex flex-col items-center">
                 {stage.complete ? (
@@ -90,7 +92,7 @@ const HoldingProgress: React.FC = () => {
                 ) : (
                   <Circle className="h-6 w-6 text-gray-300" />
                 )}
-                {index < holdingStages.length - 1 && (
+                {index < EstagioHolding.length - 1 && (
                   <div className="h-full w-0.5 bg-gray-200 my-1" />
                 )}
               </div>
@@ -122,7 +124,8 @@ const HoldingProgress: React.FC = () => {
         
         <div className="mt-6 flex justify-center">
           <Button className="bg-w1-mint text-w1-teal hover:bg-w1-mint/90">
-            Continuar Processo
+            <Link to="/holdings">Continuar Processo</Link>
+
           </Button>
         </div>
       </CardContent>
@@ -130,4 +133,4 @@ const HoldingProgress: React.FC = () => {
   );
 };
 
-export default HoldingProgress;
+export default EstagioHolding;

@@ -32,7 +32,7 @@ const HoldingDetalhesPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   
-  // Mock data - normalmente viria de uma API
+  // Dados da Holding (Mock para SQL)
   const holdingData = {
     id: Number(id) || 1,
     nome: id === "1" ? "Família Silva Holdings" : "JSP Participações",
@@ -166,8 +166,13 @@ const HoldingDetalhesPage = () => {
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="socios" className="w-full">
-        <TabsList className="grid grid-cols-5 h-auto">
+      <Tabs defaultValue="docs" className="w-full">
+        
+        <TabsList className="grid grid-cols-3 h-auto">
+          <TabsTrigger value="documentos" className="flex flex-col items-center py-2">
+            <FileText className="h-4 w-4 mb-1" />
+            <span className="text-xs">Docs</span>
+          </TabsTrigger>
           <TabsTrigger value="socios" className="flex flex-col items-center py-2">
             <Users className="h-4 w-4 mb-1" />
             <span className="text-xs">Sócios</span>
@@ -176,18 +181,6 @@ const HoldingDetalhesPage = () => {
             <Building className="h-4 w-4 mb-1" />
             <span className="text-xs">Bens</span>
           </TabsTrigger>
-          <TabsTrigger value="documentos" className="flex flex-col items-center py-2">
-            <FileText className="h-4 w-4 mb-1" />
-            <span className="text-xs">Docs</span>
-          </TabsTrigger>
-          <TabsTrigger value="distribuicao" className="flex flex-col items-center py-2">
-            <PieChart className="h-4 w-4 mb-1" />
-            <span className="text-xs">Distrib.</span>
-          </TabsTrigger>
-          <TabsTrigger value="configuracoes" className="flex flex-col items-center py-2">
-            <Settings className="h-4 w-4 mb-1" />
-            <span className="text-xs">Config.</span>
-          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="socios" className="mt-4">
@@ -195,7 +188,6 @@ const HoldingDetalhesPage = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex justify-between items-center">
                 <span>Quadro Societário</span>
-                <Button size="sm" className="h-8">Editar</Button>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -216,7 +208,6 @@ const HoldingDetalhesPage = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex justify-between items-center">
                 <span>Bens Integralizados</span>
-                <Button size="sm" className="h-8">Adicionar</Button>
               </CardTitle>
             </CardHeader>
             <CardContent>

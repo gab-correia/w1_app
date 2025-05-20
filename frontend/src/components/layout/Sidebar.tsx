@@ -16,9 +16,7 @@ const Sidebar = () => {
     { icon: <Home className="h-5 w-5" />, label: 'Dashboard', path: '/' },
     { icon: <Wallet className="h-5 w-5" />, label: 'Meu Patrimônio', path: '/patrimonio' },
     { icon: <Briefcase className="h-5 w-5" />, label: 'Holdings', path: '/holdings' },
-    { icon: <Users className="h-5 w-5" />, label: 'Sucessório', path: '/sucessorio' },
     { icon: <FileText className="h-5 w-5" />, label: 'Documentos', path: '/documentos' },
-    { icon: <Target className="h-5 w-5" />, label: 'Metas', path: '/metas' },
     { icon: <MessageCircle className="h-5 w-5" />, label: 'Comunicação', path: '/comunicacao' },
     { icon: <Settings className="h-5 w-5" />, label: 'Configurações', path: '/configuracoes' },
   ];
@@ -27,10 +25,6 @@ const Sidebar = () => {
   const consultantMenuItems = [
     { icon: <Home className="h-5 w-5" />, label: 'Dashboard', path: '/dashboard-consultor' },
     { icon: <Users className="h-5 w-5" />, label: 'Clientes', path: '/clientes' },
-    { icon: <FileText className="h-5 w-5" />, label: 'Documentos', path: '/documentos-consultor' },
-    { icon: <FilePlus className="h-5 w-5" />, label: 'Adicionar Doc', path: '/adicionar-documento' },
-    { icon: <Upload className="h-5 w-5" />, label: 'Digitalizar', path: '/document-scanner' },
-    { icon: <BarChart3 className="h-5 w-5" />, label: 'Relatórios', path: '/relatorios' },
     { icon: <Settings className="h-5 w-5" />, label: 'Configurações', path: '/configuracoes' },
   ];
   

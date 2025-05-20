@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Briefcase, FileText, Target, Users } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
-import HoldingProgress from "@/components/dashboard/HoldingProgress";
-import PatrimonyOverview from "@/components/dashboard/PatrimonyOverview";
+import EstagioHolding from "@/components/dashboard/HoldingProgress";
 
 const Home = () => {
   const patrimonioTotal = 122500000;
@@ -22,12 +21,17 @@ const Home = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-w1-teal">Dashboard</h1>
 
+    <div className="space-y-6">
+      
+      <h1 className="text-2xl font-bold text-w1-teal">Dashboard</h1>
+      
       <div className="space-y-4">
+      
         <Card className="bg-gradient-to-br from-w1-teal to-w1-teal/90 text-white">
+        
           <CardContent className="p-6">
+            
             <h2 className="text-lg font-medium mb-3">Patrimônio Total</h2>
             <div className="flex items-end gap-2">
               <p className="text-3xl font-bold">{formatarValor(patrimonioTotal)}</p>
@@ -35,7 +39,6 @@ const Home = () => {
                 {crescimentoPercentual >= 0 ? '+' : ''}{crescimentoPercentual.toFixed(1)}%
               </p>
             </div>
-            
             
             <div className="mt-4">
               <Link to="/patrimonio">
@@ -49,12 +52,12 @@ const Home = () => {
         </Card>
 
         {/* Holding Progress Component */}
-        <HoldingProgress />
+        <EstagioHolding />
 
         {/* Patrimony Overview Component with distribution chart */}
-        <PatrimonyOverview />
+        
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 ap-4">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-4">
@@ -86,83 +89,8 @@ const Home = () => {
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                    <Users className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <h2 className="font-medium">Sucessório</h2>
-                </div>
-                <Link to="/sucessorio">
-                  <Button variant="ghost" size="sm">
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-              
-              <div>
-                <div className="flex justify-between items-center text-sm mb-1">
-                  <span>Planejamento Sucessório</span>
-                  <span className="text-amber-600">40%</span>
-                </div>
-                <Progress value={40} className="h-2" />
-                
-                <div className="flex justify-between items-center text-sm mb-1 mt-3">
-                  <span>Documentação</span>
-                  <span className="text-red-600">15%</span>
-                </div>
-                <Progress value={15} className="h-2" />
-              </div>
-            </CardContent>
-          </Card>
+          
         </div>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-                  <Target className="h-5 w-5 text-amber-600" />
-                </div>
-                <h2 className="font-medium">Metas e Objetivos</h2>
-              </div>
-              <Link to="/metas">
-                <Button variant="ghost" size="sm">
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            
-            <div className="space-y-3">
-              <div>
-                <div className="flex justify-between items-center text-sm mb-1">
-                  <span>Constituir Holding Familiar</span>
-                  <span>75%</span>
-                </div>
-                <Progress value={75} className="h-2" />
-              </div>
-              
-              <div>
-                <div className="flex justify-between items-center text-sm mb-1">
-                  <span>Diversificar Investimentos</span>
-                  <span>40%</span>
-                </div>
-                <Progress value={40} className="h-2" />
-              </div>
-              
-              <div>
-                <div className="flex justify-between items-center text-sm mb-1">
-                  <span>Elaborar Testamento</span>
-                  <span>0%</span>
-                </div>
-                <Progress value={0} className="h-2" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         <Card>
           <CardContent className="p-4">

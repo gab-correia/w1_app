@@ -70,7 +70,7 @@ const EstagioHolding: React.FC = () => {
       
       <CardContent className="pt-6">
         <div className="mb-4">
-          <div className="flex justify-between text-sm mb-1">
+          <div className="flex justify-between text-large mb-1">
             <span>Progresso total</span>
             <span className="font-medium">{progressPercentage}%</span>
           </div>
@@ -79,7 +79,7 @@ const EstagioHolding: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-6 mt-6">
+        <div className="mt-12 flex flex-wrap justify-between">
           {EstagioHolding.map((stage, index) => (
             <div key={index} className={`flex ${stage.current ? 'animate-fade-in' : ''}`}>
               <div className="mr-4 flex flex-col items-center">

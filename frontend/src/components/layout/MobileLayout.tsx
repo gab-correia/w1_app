@@ -45,7 +45,7 @@ const MobileLayout = () => {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 p-4 pb-20 md:pb-4 mx-auto w-full">
+      <main className="flex-1 p-10 pb-4 max-w-8xl md:pb-4 mx-auto w-full">
         <Outlet />
       </main>
 

@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+  frontend:
+    build: ./frontend
+    ports:
+      - "4000:80"
+    env_file:
+      - ./frontend/.env
+  flowise:
+    image: flowiseai/flowise
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./flowise_data:/root/.flowise
+    environment:
+      - PORT=3000
+      - FLOWISE_USERNAME=admin
+      - FLOWISE_PASSWORD=admin
+    restart: always

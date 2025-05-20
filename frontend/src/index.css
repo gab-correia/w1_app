@@ -1,0 +1,125 @@
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 196 59% 14%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 168 54% 51%;
+    --secondary-foreground: 196 59% 14%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 168 54% 75%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 168 54% 51%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 196 59% 14%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 168 54% 51%;
+    --sidebar-primary-foreground: 196 59% 14%;
+    --sidebar-accent: 168 54% 75%;
+    --sidebar-accent-foreground: 196 59% 14%;
+    --sidebar-border: 196 59% 20%;
+    --sidebar-ring: 168 54% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+@layer components {
+  .w1-card {
+    @apply bg-white rounded-xl shadow-md p-4 transition-all duration-300 hover:shadow-lg animate-fade-in;
+  }
+  
+  .w1-card-title {
+    @apply text-w1-teal font-medium mb-1 text-lg;
+  }
+  
+  .w1-progress {
+    @apply h-2 w-full bg-w1-gray rounded-full overflow-hidden;
+  }
+  
+  .w1-progress-bar {
+    @apply h-full bg-w1-mint rounded-full transition-all duration-500 ease-out;
+  }
+  
+  .w1-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .w1-badge-mint {
+    @apply bg-w1-mint/20 text-w1-teal;
+  }
+  
+  .w1-badge-teal {
+    @apply bg-w1-teal/20 text-w1-teal;
+  }
+  
+  .w1-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 text-base font-medium rounded-lg transition-colors;
+  }
+  
+  .w1-nav-item-active {
+    @apply bg-white/10 text-white;
+  }
+  
+  .w1-nav-item-inactive {
+    @apply text-white/70 hover:text-white hover:bg-white/5;
+  }
+
+  /* Animações */
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-in {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
+}
+

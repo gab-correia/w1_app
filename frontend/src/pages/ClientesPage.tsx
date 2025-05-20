@@ -168,7 +168,6 @@ const ClientesPage = () => {
                   <th className="text-left font-medium py-3 px-4 hidden sm:table-cell">Email</th>
                   <th className="text-left font-medium py-3 px-4 hidden md:table-cell">Documentos</th>
                   <th className="text-left font-medium py-3 px-4 hidden lg:table-cell">Última Atividade</th>
-                  <th className="text-left font-medium py-3 px-4">Status</th>
                   <th className="text-left font-medium py-3 px-4">Ações</th>
                 </tr>
               </thead>
@@ -179,25 +178,20 @@ const ClientesPage = () => {
                     <td className="py-3 px-4 hidden sm:table-cell">{client.email}</td>
                     <td className="py-3 px-4 hidden md:table-cell">
                       {client.documents} 
-                      {client.pendingDocuments > 0 && (
+                      {client.pendingDocuments > 0 ? (
                         <Badge className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-200">
                           {client.pendingDocuments} pendente(s)
                         </Badge>
-                      )}
-                    </td>
-                    <td className="py-3 px-4 hidden lg:table-cell">{formatDate(client.lastActive)}</td>
-                    <td className="py-3 px-4">
-                      {client.pendingDocuments > 0 ? (
-                        <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">
-                          Pendente
-                        </Badge>
                       ) : (
-                        <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+                        <Badge className="ml-2 bg-green-100 text-green-800 hover:bg-green-200">
                           Em dia
                         </Badge>
-                      )}
+                      )
+                    }
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 hidden lg:table-cell">{formatDate(client.lastActive)}</td>
+                    
+                    <td className="py-3 px-5">
                       <div className="flex items-center gap-2">
                         <Button 
                           variant="ghost" 
@@ -207,24 +201,6 @@ const ClientesPage = () => {
                           title="Ver detalhes"
                         >
                           <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8"
-                          onClick={() => handleUploadRequest(client)}
-                          title="Solicitar documentos"
-                        >
-                          <Upload className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8"
-                          onClick={() => handleStartChat(client)}
-                          title="Iniciar conversa"
-                        >
-                          <MessageCircle className="h-4 w-4" />
                         </Button>
                       </div>
                     </td>

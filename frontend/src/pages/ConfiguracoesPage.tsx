@@ -78,16 +78,7 @@ const ConfiguracoesPage = () => {
             </div>
             
             <Separator className="my-3" />
-            
-            <div className="flex items-center justify-between py-2">
-              <div>
-                <h3 className="font-medium">Sessões ativas</h3>
-                <p className="text-sm text-muted-foreground">Gerencie seus dispositivos conectados</p>
-              </div>
-              <Button variant="ghost">
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
+          
           </CardContent>
         </Card>
 

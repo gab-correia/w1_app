@@ -65,7 +65,7 @@ const DashboardConsultorPage = () => {
           onClick={() => navigate("/adicionar-documento")}
         >
           <FilePlus className="h-4 w-4" />
-          Criar Novo Documento
+          Adicionar Modelo De Documento
         </Button>
       </div>
 
@@ -93,7 +93,7 @@ const DashboardConsultorPage = () => {
             <CardTitle>Ações Rápidas</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <Button 
                 variant="outline" 
                 className="h-auto py-4 flex flex-col items-center justify-center gap-2"
@@ -102,14 +102,7 @@ const DashboardConsultorPage = () => {
                 <Users className="h-5 w-5 text-w1-teal" />
                 <span>Ver Clientes</span>
               </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto py-4 flex flex-col items-center justify-center gap-2"
-                onClick={() => navigate("/document-scanner")}
-              >
-                <Upload className="h-5 w-5 text-w1-teal" />
-                <span>Digitalizar Documento</span>
-              </Button>
+             
             </div>
           </CardContent>
         </Card>

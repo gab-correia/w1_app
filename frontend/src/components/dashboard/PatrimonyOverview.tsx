@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const PatrimonyOverview: React.FC = () => {
   // Mock data - in a real app, this would come from an API
   const patrimonyData = {
-    total: 1000000,
+    total: 100000,
     increase: 5.7,
-    income: 15000,
+    income: 20000,
     expenses: 7500,
     distribution: [
       { category: 'Renda Fixa', percentage: 45, color: '#0D2D3B' },

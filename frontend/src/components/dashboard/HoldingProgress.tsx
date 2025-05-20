@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 const HoldingProgress: React.FC = () => {
-  // Mock data for holding progress
+  // Mostra o estagio atual e os processos já concluidos da holding
   const holdingStages = [
     { 
       name: 'Planejamento Estratégico',

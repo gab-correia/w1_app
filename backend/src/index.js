@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 require('dotenv').config();
-const pool = require('./db'); // <- novo
+const pool = require('./db'); 
 
 const authRoutes = require('./auth');
 

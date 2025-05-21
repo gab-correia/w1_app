@@ -29,7 +29,7 @@ router.post('/api/auth/register', async (req, res) => {
 });
 
 // 🔐 Login
-router.post('/login', async (req, res) => {
+router.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   console.log('🔐 Tentativa de login:', email);
 

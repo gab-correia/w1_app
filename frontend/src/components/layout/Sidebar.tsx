@@ -17,6 +17,7 @@ const Sidebar = () => {
     { icon: <Wallet className="h-5 w-5" />, label: 'Meu Patrimônio', path: '/patrimonio' },
     { icon: <Briefcase className="h-5 w-5" />, label: 'Holdings', path: '/holdings' },
     { icon: <FileText className="h-5 w-5" />, label: 'Documentos', path: '/documentos' },
+    { icon: <BarChart3 className="h-5 w-5" />, label: 'Simulador', path: '/simulador' },
     { icon: <MessageCircle className="h-5 w-5" />, label: 'Comunicação', path: '/comunicacao' },
     { icon: <Settings className="h-5 w-5" />, label: 'Configurações', path: '/configuracoes' },
   ];
@@ -25,7 +26,9 @@ const Sidebar = () => {
   const consultantMenuItems = [
     { icon: <Home className="h-5 w-5" />, label: 'Dashboard', path: '/dashboard-consultor' },
     { icon: <Users className="h-5 w-5" />, label: 'Clientes', path: '/clientes' },
+    { icon: <BarChart3 className="h-5 w-5" />, label: 'Simulador', path: '/simulador' },
     { icon: <Settings className="h-5 w-5" />, label: 'Configurações', path: '/configuracoes' },
+    
   ];
   
   const menuItems = isConsultant ? consultantMenuItems : clientMenuItems;

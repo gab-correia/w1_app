@@ -92,6 +92,7 @@ const App = () => {
               <Route path="/comunicacao" element={<ProtectedRoute element={<ComunicacaoPage />} allowedUserType="client" />} />
               <Route path="/configuracoes" element={<ProtectedRoute element={<ConfiguracoesPage />} allowedUserType="client" />} />
               
+              
               {/* Consultant routes */}
               <Route path="/dashboard-consultor" element={<ProtectedRoute element={<DashboardConsultorPage />} allowedUserType="consultant" />} />
               <Route path="/clientes" element={<ProtectedRoute element={<ClientesPage />} allowedUserType="consultant" />} />
@@ -101,6 +102,7 @@ const App = () => {
               {/* Shared routes */}
               <Route path="/document-scanner" element={<ProtectedRoute element={<DocumentScannerPage />} />} />
               <Route path="/simulador" element={<Simulador/>} />
+              
               
               <Route path="*" element={<NotFound />} />
             </Route>

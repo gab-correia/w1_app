@@ -38,6 +38,8 @@ const LoginPage = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
+  
+
   const handleClientLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -58,7 +60,6 @@ const LoginPage = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('userType', data.userType);
       localStorage.setItem('isLoggedIn', 'true');
-
       toast({
         title: 'Login bem-sucedido',
         description: 'Bem-vindo!',

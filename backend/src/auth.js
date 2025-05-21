@@ -55,6 +55,8 @@ router.post('/api/auth/login', async (req, res) => {
       { expiresIn: '2h' }
     );
 
+    
+
     console.log('✅ Login bem-sucedido para:', email);
 
     res.json({

@@ -5,6 +5,7 @@ import { ArrowRight, Briefcase, FileText, Target, Users } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import EstagioHolding from "@/components/dashboard/HoldingProgress";
+import HoldingSimulator from "@/components/dashboard/HoldingSimulator";
 
 const Home = () => {
   const patrimonioTotal = 122500000;
@@ -54,10 +55,14 @@ const Home = () => {
         {/* Holding Progress Component */}
         <EstagioHolding />
 
-        {/* Patrimony Overview Component with distribution chart */}
+       
         
+        <div className="grid grid-cols-2 gap-4">
+        
+        <HoldingSimulator mode='home'/>
+        
+        <div className="grid grid-rows-2 gap-6">
 
-        <div className="grid grid-cols-1 ap-4">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-4">
@@ -88,10 +93,8 @@ const Home = () => {
                 <Progress value={75} className="h-2" />
               </div>
             </CardContent>
-          </Card>
+        </Card>
           
-        </div>
-
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-4">
@@ -125,6 +128,9 @@ const Home = () => {
           </CardContent>
         </Card>
       </div>
+    </div>
+    </div>
+
     </div>
   );
 };

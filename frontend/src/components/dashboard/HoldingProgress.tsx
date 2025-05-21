@@ -78,7 +78,7 @@ const EstagioHolding: React.FC = () => {
             <div className="w1-progress-bar" style={{ width: `${progressPercentage}%` }}></div>
           </div>
         </div>
-
+      
         <div className="mt-12 flex flex-wrap justify-between">
           {EstagioHolding.map((stage, index) => (
             <div key={index} className={`flex ${stage.current ? 'animate-fade-in' : ''}`}>

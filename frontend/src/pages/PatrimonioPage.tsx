@@ -1,11 +1,30 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import AdicionarAtivoModal from "@/components/patrimonio/AdicionarAtivoModal";
 
 const PatrimonioPage = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
+  useEffect(() => {
+  const fetchPatrimonios = async () => {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`${API_URL}/api/patrimonios`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+    console.log('Patrimônios:', data);
+  };
+
+  fetchPatrimonios();
+}, []);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patrimonioTotal, setPatrimonioTotal] = useState(12500000);
   

@@ -11,7 +11,8 @@ import {
   FileText, 
   PieChart, 
   BarChart4, 
-  Settings 
+  Settings,
+  Check
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -33,7 +34,7 @@ const HoldingDetalhesPage = () => {
   const { id } = useParams<{ id: string }>();
   
   // Dados da Holding (Mock para SQL)
-  const holdingData = {
+  const EstagioHolding = {
     id: Number(id) || 1,
     nome: id === "1" ? "Família Silva Holdings" : "JSP Participações",
     tipo: id === "1" ? "Limitada" : "S.A.",
@@ -41,6 +42,44 @@ const HoldingDetalhesPage = () => {
     dataCriacao: id === "1" ? "15/03/2022" : "10/01/2023",
     cnpj: id === "1" ? "12.345.678/0001-90" : "98.765.432/0001-21",
     valorTotal: id === "1" ? 7500000 : 3200000,
+    timeline: [
+      { 
+        stage: "aprovacao", 
+        nome: "Aprovação", 
+        completo: id === "1" ? true : true,
+        data: id === "1" ? "10/03/2022" : "05/01/2023",
+        responsavel: "Consultor W1"
+      },
+      { 
+        stage: "documentacao", 
+        nome: "Documentação", 
+        completo: id === "1" ? true : id === "2" ? true : false,
+        data: id === "1" ? "12/03/2022" : "15/01/2023",
+        responsavel: id === "1" ? "João Silva" : "Pedro Oliveira"
+      },
+      { 
+        stage: "estruturacao", 
+        nome: "Estruturação", 
+        completo: id === "1" ? true : id === "2" ? false : false,
+        data: id === "1" ? "13/03/2022" : null,
+        responsavel: "Consultor W1"
+      },
+      { 
+        stage: "registro", 
+        nome: "Registro", 
+        completo: id === "1" ? true : false,
+        data: id === "1" ? "14/03/2022" : null,
+        responsavel: "Consultor W1"
+      },
+      { 
+        stage: "conclusao", 
+        nome: "Conclusão", 
+        completo: id === "1" ? true : false,
+        data: id === "1" ? "15/03/2022" : null,
+        responsavel: "Consultor W1"
+      }
+    ],
+    
     socios: [
       { id: 1, nome: "João Silva", percentual: id === "1" ? 40 : 50 },
       { id: 2, nome: "Maria Silva", percentual: id === "1" ? 30 : 30 },
@@ -127,6 +166,29 @@ const HoldingDetalhesPage = () => {
     }
   };
 
+  const getEtapaAtual = () => {
+    const etapasConcluidas = EstagioHolding.timeline.filter(etapa => etapa.completo);
+    const ultimaEtapaConcluida = etapasConcluidas[etapasConcluidas.length - 1];
+    
+    if (etapasConcluidas.length === EstagioHolding.timeline.length) {
+      return "Concluído";
+    }
+    
+    const indexProximaEtapa = EstagioHolding.timeline.findIndex(etapa => etapa.stage === ultimaEtapaConcluida?.stage) + 1;
+    if (indexProximaEtapa < EstagioHolding.timeline.length) {
+      return `Em ${EstagioHolding.timeline[indexProximaEtapa].nome}`;
+    }
+    
+    return "Em andamento";
+  };
+
+  const calcularProgresso = () => {
+    const totalEtapas = EstagioHolding.timeline.length;
+    const etapasConcluidas = EstagioHolding.timeline.filter(etapa => etapa.completo).length;
+    return (etapasConcluidas / totalEtapas) * 100;
+  };
+  
+
   return (
     <div className="space-y-6 pb-10">
       <div className="flex items-center space-x-4">
@@ -139,28 +201,87 @@ const HoldingDetalhesPage = () => {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-w1-teal">{holdingData.nome}</h1>
+          <h1 className="text-2xl font-bold text-w1-teal">{EstagioHolding.nome}</h1>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-sm text-muted-foreground">{holdingData.tipo}</span>
-            {getStatusBadge(holdingData.status)}
+            <span className="text-sm text-muted-foreground">{EstagioHolding.tipo}</span>
+            {getStatusBadge(EstagioHolding.status)}
           </div>
         </div>
       </div>
+      
+
+     {/* Timeline de processo da holding */}
+     <Card className="overflow-hidden border-none shadow-md">
+        <CardContent className="p-0">
+          <div className="bg-gradient-to-r from-w1-teal to-w1-mint p-4">
+            <div className="flex items-center justify-between text-white mb-2">
+              <h3 className="font-medium">Processo de Criação da Holding</h3>
+              <span className="text-sm">
+                {EstagioHolding.status === "ativa" 
+                  ? "Holding Ativa" 
+                  : getEtapaAtual()}
+              </span>
+            </div>
+            
+            {/* Barra de progresso */}
+            <div className="w-full bg-white/20 h-1.5 rounded-full mb-4">
+              <div 
+                className="bg-white h-full rounded-full" 
+                style={{ width: `${calcularProgresso()}%` }}
+              />
+            </div>
+            
+            {/* Timeline */}
+            <div className="relative">
+              <div className="absolute left-0 top-1/4 w-full h-0.5 bg-white/10" />
+              
+              <div className="flex justify-between relative">
+                {EstagioHolding.timeline.map((etapa, index) => (
+                  <div 
+                    key={etapa.stage}
+                    className="flex flex-col items-center z-10"
+                  >
+                    <div 
+                      className={`w-8 h-8 rounded-full flex items-center justify-center mb-1
+                        ${etapa.completo 
+                          ? 'bg-white text-w1-teal' 
+                          : 'bg-white/30 text-white'}`}
+                    >
+                      {etapa.completo ? <Check className="h-5 w-5" /> : index + 1}
+                    </div>
+                    <span className={`text-xs font-medium ${etapa.completo ? 'text-white' : 'text-white/70'}`}>
+                      {etapa.nome}
+                    </span>
+                    {etapa.data && (
+                      <span className="text-[10px] text-white/80 mt-0.5">
+                        {etapa.data}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+
 
       <Card>
         <CardContent className="p-4">
+        
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-muted-foreground">CNPJ</p>
-              <p className="font-medium">{holdingData.cnpj}</p>
+              <p className="font-medium">{EstagioHolding.cnpj}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Data de Criação</p>
-              <p className="font-medium">{holdingData.dataCriacao}</p>
+              <p className="font-medium">{EstagioHolding.dataCriacao}</p>
             </div>
             <div className="col-span-2">
               <p className="text-sm text-muted-foreground">Patrimônio Total</p>
-              <p className="font-bold text-xl text-w1-teal">{formatarValor(holdingData.valorTotal)}</p>
+              <p className="font-bold text-xl text-w1-teal">{formatarValor(EstagioHolding.valorTotal)}</p>
             </div>
           </div>
         </CardContent>
@@ -192,7 +313,7 @@ const HoldingDetalhesPage = () => {
             </CardHeader>
             <CardContent>
               <ul className="divide-y">
-                {holdingData.socios.map((socio: Socio) => (
+                {EstagioHolding.socios.map((socio: Socio) => (
                   <li key={socio.id} className="py-3 flex justify-between items-center">
                     <span>{socio.nome}</span>
                     <Badge variant="outline" className="font-medium">{socio.percentual}%</Badge>
@@ -212,7 +333,7 @@ const HoldingDetalhesPage = () => {
             </CardHeader>
             <CardContent>
               <ul className="divide-y">
-                {holdingData.bens.filter((bem: Bem) => bem.valor > 0).map((bem: Bem) => (
+                {EstagioHolding.bens.filter((bem: Bem) => bem.valor > 0).map((bem: Bem) => (
                   <li key={bem.id} className="py-3">
                     <div className="flex justify-between items-center">
                       <div>
@@ -244,7 +365,7 @@ const HoldingDetalhesPage = () => {
             </CardHeader>
             <CardContent>
               <ul className="divide-y">
-                {holdingData.documentos.map((doc: any) => (
+                {EstagioHolding.documentos.map((doc: any) => (
                   <li key={doc.id} className="py-3 flex justify-between items-center">
                     <div>
                       <p className="font-medium">{doc.nome}</p>
@@ -287,28 +408,28 @@ const HoldingDetalhesPage = () => {
                   <div className="w-3 h-3 rounded-full bg-w1-teal"></div>
                   <div className="flex-1">Imóveis</div>
                   <div className="font-medium">
-                    {formatarValor(holdingData.bens.filter(b => b.tipo === 'imovel').reduce((sum, b) => sum + b.valor, 0))}
+                    {formatarValor(EstagioHolding.bens.filter(b => b.tipo === 'imovel').reduce((sum, b) => sum + b.valor, 0))}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-w1-mint"></div>
                   <div className="flex-1">Participações Societárias</div>
                   <div className="font-medium">
-                    {formatarValor(holdingData.bens.filter(b => b.tipo === 'participacao').reduce((sum, b) => sum + b.valor, 0))}
+                    {formatarValor(EstagioHolding.bens.filter(b => b.tipo === 'participacao').reduce((sum, b) => sum + b.valor, 0))}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                   <div className="flex-1">Veículos</div>
                   <div className="font-medium">
-                    {formatarValor(holdingData.bens.filter(b => b.tipo === 'veiculo').reduce((sum, b) => sum + b.valor, 0))}
+                    {formatarValor(EstagioHolding.bens.filter(b => b.tipo === 'veiculo').reduce((sum, b) => sum + b.valor, 0))}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-gray-300"></div>
                   <div className="flex-1">Outros</div>
                   <div className="font-medium">
-                    {formatarValor(holdingData.bens.filter(b => !['imovel', 'participacao', 'veiculo'].includes(b.tipo)).reduce((sum, b) => sum + b.valor, 0))}
+                    {formatarValor(EstagioHolding.bens.filter(b => !['imovel', 'participacao', 'veiculo'].includes(b.tipo)).reduce((sum, b) => sum + b.valor, 0))}
                   </div>
                 </div>
               </div>

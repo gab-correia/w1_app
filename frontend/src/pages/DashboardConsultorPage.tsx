@@ -5,7 +5,8 @@ import {
   FilePlus, 
   Users, 
   Upload,
-  Search
+  Search,
+  User
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,8 @@ const DashboardConsultorPage = () => {
   const navigate = useNavigate();
   const [searchClient, setSearchClient] = useState("");
   const [searchDocument, setSearchDocument] = useState("");
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
 
   const filteredClients = mockClients.filter(client => 
     client.name.toLowerCase().includes(searchClient.toLowerCase()) ||
@@ -50,6 +53,18 @@ const DashboardConsultorPage = () => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');
+  };
+
+  const handleViewProfile = (client: typeof mockClients[0]) => {
+    setSelectedClient(client);
+    setShowProfileDialog(true);
+  };
+
+  const handleViewFullProfile = () => {
+    if (selectedClient) {
+      navigate(`/cliente/${selectedClient.id}/perfil`);
+      setShowProfileDialog(false);
+    }
   };
 
   return (
@@ -159,9 +174,17 @@ const DashboardConsultorPage = () => {
                         <td className="py-3 px-4">{client.documents}</td>
                         <td className="py-3 px-4">{formatDate(client.lastActive)}</td>
                         <td className="py-3 px-4">
-                          <Button variant="ghost" size="sm" onClick={() => navigate(`/cliente/${client.id}`)}>
-                            Ver perfil
-                          </Button>
+                        <div className="flex items-center gap-2">
+                        <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => handleViewProfile(client)}
+                              className="flex items-center gap-1"
+                            >
+                              <User className="h-4 w-4" />
+                              Ver perfil
+                        </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}

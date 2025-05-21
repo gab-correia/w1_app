@@ -45,3 +45,12 @@ CREATE TABLE IF NOT EXISTS holding_socios (
     FOREIGN KEY (holding_id) REFERENCES holdings(id) ON DELETE CASCADE,
     FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
 );
+
+CREATE TABLE patrimonios (
+  id SERIAL PRIMARY KEY,
+  cliente_id INTEGER REFERENCES clientes(id) ON DELETE CASCADE,
+  categoria TEXT NOT NULL,
+  valor NUMERIC(12, 2) NOT NULL,
+  data_aquisicao DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -19,6 +19,17 @@ services:
       - /app/node_modules 
     env_file:
       - .env
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+    restart: always
+
   flowise:
     image: flowiseai/flowise
     ports:
@@ -44,5 +55,19 @@ services:
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@exemplo.com    # e-mail de login no pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin            # senha de login no pgAdmin
+    ports:
+      - "5050:80"    # porta host:container (acesse http://localhost:5050)
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
 volumes:
   postgres_data:
+  pgadmin_data:

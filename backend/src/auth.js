@@ -11,22 +11,49 @@ router.post('/api/auth/register', async (req, res) => {
   const { name, email, password, userType } = req.body;
   console.log('📥 Dados recebidos no cadastro:', req.body);
 
+  const client = await pool.connect();
+
   try {
+    await client.query('BEGIN'); // Iniciar transação
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await pool.query(
+    const userResult = await client.query(
       'INSERT INTO users (name, email, password, user_type) VALUES ($1, $2, $3, $4) RETURNING *',
       [name, email, hashedPassword, userType]
     );
 
-    console.log('✅ Usuário cadastrado:', result.rows[0]);
+    const user = userResult.rows[0];
+    console.log('✅ Usuário cadastrado:', user);
 
-    res.json({ message: 'Usuário registrado!', user: result.rows[0] });
+    if (userType === 'client') {
+      await client.query('INSERT INTO clientes (user_id) VALUES ($1)', [user.id]);
+      console.log('👤 Cliente inserido.');
+    } else if (userType === 'consultant') {
+      await client.query('INSERT INTO consultores (user_id) VALUES ($1)', [user.id]);
+      console.log('🧠 Consultor inserido.');
+    }
+
+    await client.query('COMMIT'); // Confirmar transação
+
+    res.json({ message: 'Usuário registrado!', user });
+
   } catch (error) {
+    await client.query('ROLLBACK'); // Desfaz tudo se algo falhar
+
+    if (error.code === '23505') {
+      console.log('⚠️ E-mail já existe:', email);
+      return res.status(400).json({ error: 'E-mail já cadastrado' });
+    }
+
     console.error('❌ Erro no cadastro:', error);
     res.status(500).json({ error: 'Erro no cadastro' });
+
+  } finally {
+    client.release(); // Liberar conexão
   }
 });
+
 
 // 🔐 Login
 router.post('/api/auth/login', async (req, res) => {

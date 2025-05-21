@@ -71,9 +71,9 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.users (id, name, email, password, user_type, created_at) FROM stdin;
-1	camila	camila@gmail.com	$2b$10$0ycoNRtsQgUxMEm064lv0eG/BXfQqWQ37trGcMZKQMB9FXsKK1/FW	client	2025-05-21 16:02:26.421579
-2	Gabriel	gabriel@exemplo.com	$2b$10$a6EznVImzmXJk2.7rKB13.wVcqvPyojckZs.xLGdcK/nvBQ6rxbTa	client	2025-05-21 17:00:40.919588
-3	felipe	felipe@exemplo.com	$2b$10$0Jz9E9LPKSVZPyf0Ve5k9OKLI7NCxVN4vNsA9VN5g49FuEPij4O96	client	2025-05-21 17:01:50.442701
+10	camila	camila@gmail.com	$2b$10$0ycoNRtsQgUxMEm064lv0eG/BXfQqWQ37trGcMZKQMB9FXsKK1/FW	client	2025-05-21 16:02:26.421579
+11	Gabriel	gabriel@exemplo.com	$2b$10$a6EznVImzmXJk2.7rKB13.wVcqvPyojckZs.xLGdcK/nvBQ6rxbTa	client	2025-05-21 17:00:40.919588
+12	felipe	felipe@exemplo.com	$2b$10$0Jz9E9LPKSVZPyf0Ve5k9OKLI7NCxVN4vNsA9VN5g49FuEPij4O96	client	2025-05-21 17:01:50.442701
 \.
 
 

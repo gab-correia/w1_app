@@ -25,13 +25,12 @@ const fetchClientName = async () => {
     }
 
     const data = await response.json();
-    return data[0]?.name; // Corrigido para acessar o primeiro usuário
+    return data[0]?.name; 
   } catch (error) {
     console.error(error);
     return null;
   }
 };
-
 
 const Sidebar = () => {
 

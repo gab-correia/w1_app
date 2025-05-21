@@ -57,9 +57,11 @@ const LoginPage = () => {
         throw new Error(data.error || 'Erro no login');
       }
 
-      localStorage.setItem('token', data.token);
+      const novoToken = data.token; 
+      localStorage.setItem('token', novoToken); 
       localStorage.setItem('userType', data.userType);
       localStorage.setItem('isLoggedIn', 'true');
+
       toast({
         title: 'Login bem-sucedido',
         description: 'Bem-vindo!',
@@ -94,7 +96,9 @@ const LoginPage = () => {
         throw new Error(data.error || 'Erro no login');
       }
 
-      localStorage.setItem('token', data.token);
+      
+      const novoToken = data.token;
+      localStorage.setItem('token', novoToken); 
       localStorage.setItem('userType', data.userType);
       localStorage.setItem('isLoggedIn', 'true');
 

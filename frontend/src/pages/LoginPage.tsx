@@ -67,7 +67,7 @@ const LoginPage = () => {
         description: 'Bem-vindo!',
       });
 
-      navigate('/');
+      navigate('/dashboard-consultor');
     } catch (error: any) {
       toast({
         variant: 'destructive',

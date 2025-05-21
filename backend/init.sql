@@ -1,11 +1,8 @@
 CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  email TEXT UNIQUE NOT NULL
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    user_type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-INSERT INTO users (name, email) VALUES
-('Gabriel', 'gabriel@example.com'),
-('DaniloMalvado', 'daniloMalvado@example.com'),
-('FelipinhoBonzinho', 'felipinhoBonzinho@example.com');
-

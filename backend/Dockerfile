@@ -13,6 +13,8 @@ RUN npm install
 # Copie o restante dos arquivos do projeto
 COPY . .
 
+WORKDIR /app/src
+
 # Exponha a porta que a aplicação irá rodar
 EXPOSE 5000
 

@@ -41,4 +41,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

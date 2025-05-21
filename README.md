@@ -88,3 +88,12 @@ aplicativo-w1/
 - Para persistência de dados, os volumes do Docker são configurados automaticamente.
 
 Agora você está pronto para explorar o Aplicativo W1! 🏛️ Aplicativo W1 — Plataforma de Gestão Patrimonial
+
+
+
+
+docker exec -t w1_app_postgres_1 pg_dump -U admin -d resumos > backend/database/backup.sql
+
+
+./backup.sh
+./restore.sh

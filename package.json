@@ -6,6 +6,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@types/node": "^22.15.21",
     "@vitejs/plugin-react-swc": "^3.9.0"
   }
 }

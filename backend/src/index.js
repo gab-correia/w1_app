@@ -30,16 +30,27 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// Nova rota para testar o banco
 app.get('/api/users', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM users'); // 'users' deve existir no seu init.sql
+    // Lê o header Authorization
+    const authHeader = req.headers['authorization']; // ou req.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Token não fornecido ou inválido' });
+    }
+
+    // Se quiser extrair o token puro:
+    const token = authHeader.replace('Bearer ', '');
+
+    // Aqui você pode validar o token, se necessário
+
+    const result = await pool.query('SELECT * FROM users');
     res.json(result.rows);
   } catch (error) {
     console.error('Erro ao acessar o banco:', error);
     res.status(500).json({ error: 'Erro ao acessar o banco de dados' });
   }
 });
+
 
 app.use(authRoutes);
 

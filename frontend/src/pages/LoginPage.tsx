@@ -17,6 +17,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,97 +38,123 @@ const LoginPage = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  const handleClientLogin = (e: React.FormEvent) => {
+  const handleClientLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Simple validation
-      if (!clientEmail || !clientPassword) {
-        toast({
-          variant: "destructive",
-          title: "Erro no login",
-          description: "Por favor, preencha todos os campos.",
-        });
-        return;
-      }
-      
-      // Guarda valor de userType e isLoggedIn
-      localStorage.setItem("userType", "client");
-      localStorage.setItem("isLoggedIn", "true");
-      
-      toast({
-        title: "Login bem-sucedido",
-        description: "Bem-vindo de volta!",
+
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: clientEmail, password: clientPassword }),
       });
-      
-      navigate("/");
-    }, 1000);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro no login');
+      }
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userType', data.userType);
+      localStorage.setItem('isLoggedIn', 'true');
+
+      toast({
+        title: 'Login bem-sucedido',
+        description: 'Bem-vindo!',
+      });
+
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro no login',
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleConsultantLogin = (e: React.FormEvent) => {
+  const handleConsultantLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Simple validation
-      if (!consultantEmail || !consultantPassword) {
-        toast({
-          variant: "destructive",
-          title: "Erro no login",
-          description: "Por favor, preencha todos os campos.",
-        });
-        return;
-      }
-      
-      // Mock successful login - In a real app, this would verify credentials
-      localStorage.setItem("userType", "consultant");
-      localStorage.setItem("isLoggedIn", "true");
-      
-      toast({
-        title: "Login bem-sucedido",
-        description: "Bem-vindo consultor!",
+
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: consultantEmail, password: consultantPassword }),
       });
-      
-      navigate("/dashboard-consultor");
-    }, 1000);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro no login');
+      }
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userType', data.userType);
+      localStorage.setItem('isLoggedIn', 'true');
+
+      toast({
+        title: 'Login bem-sucedido',
+        description: 'Bem-vindo consultor!',
+      });
+
+      navigate('/dashboard-consultor');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro no login',
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate registration process
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Simple validation
-      if (!registerName || !registerEmail || !registerPassword) {
-        toast({
-          variant: "destructive",
-          title: "Erro no cadastro",
-          description: "Por favor, preencha todos os campos.",
-        });
-        return;
-      }
-      
-      toast({
-        title: "Cadastro realizado com sucesso!",
-        description: "Você pode fazer login agora.",
+    try {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: registerName,
+          email: registerEmail,
+          password: registerPassword,
+          userType: 'client',
+        }),
       });
-      
-      // Reset form and go back to login
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro no cadastro');
+      }
+
+      toast({
+        title: 'Cadastro realizado com sucesso!',
+        description: 'Agora você pode fazer login.',
+      });
+
       setShowClientRegister(false);
-      setRegisterName("");
-      setRegisterEmail("");
-      setRegisterPassword("");
-    }, 1000);
+      setRegisterName('');
+      setRegisterEmail('');
+      setRegisterPassword('');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro no cadastro',
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRequestAccess = () => {

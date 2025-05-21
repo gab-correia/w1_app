@@ -2,9 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 require('dotenv').config();
-const pool = require('./db'); // <- novo
+const pool = require('./db'); 
+
+const authRoutes = require('./auth');
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -38,5 +41,13 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+app.use(authRoutes);
+
+app.get('/api/ping', (req, res) => {
+  res.json({ message: 'Backend funcionando!' });
+});
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});

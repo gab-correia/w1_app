@@ -12,7 +12,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Mock data for clients
 const mockClients = [
@@ -260,6 +262,106 @@ const DashboardConsultorPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+    {/* Profile Dialog */}
+    <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Perfil do Cliente</DialogTitle>
+            <DialogDescription>
+              Informações rápidas sobre o cliente
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedClient && (
+            <div className="flex flex-col items-center space-y-4 p-2">
+              <Avatar className="h-24 w-24">
+                <AvatarImage src="/profile-placeholder.jpg" alt={selectedClient.name} />
+                <AvatarFallback className="bg-w1-mint text-w1-teal text-xl">
+                  {selectedClient.name.split(' ').map((n: string) => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              
+              <div className="text-center">
+                <h3 className="text-lg font-medium">{selectedClient.name}</h3>
+                <p className="text-sm text-gray-500">{selectedClient.email}</p>
+              </div>
+              
+              <div className="w-full grid grid-cols-2 gap-3 pt-4">
+                <div className="bg-gray-50 p-3 rounded-md">
+                  <p className="text-sm text-gray-500">Documentos</p>
+                  <p className="font-medium">{selectedClient.documents}</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-md">
+                  <p className="text-sm text-gray-500">Última atividade</p>
+                  <p className="font-medium">{formatDate(selectedClient.lastActive)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter className="sm:justify-between">
+            <Button variant="outline" onClick={() => setShowProfileDialog(false)}>
+              Fechar
+            </Button>{/* Profile Dialog */}
+      <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Perfil do Cliente</DialogTitle>
+            <DialogDescription>
+              Informações rápidas sobre o cliente
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedClient && (
+            <div className="flex flex-col items-center space-y-4 p-2">
+              <Avatar className="h-24 w-24">
+                <AvatarImage src="/profile-placeholder.jpg" alt={selectedClient.name} />
+                <AvatarFallback className="bg-w1-mint text-w1-teal text-xl">
+                  {selectedClient.name.split(' ').map((n: string) => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              
+              <div className="text-center">
+                <h3 className="text-lg font-medium">{selectedClient.name}</h3>
+                <p className="text-sm text-gray-500">{selectedClient.email}</p>
+              </div>
+              
+              <div className="w-full grid grid-cols-2 gap-3 pt-4">
+                <div className="bg-gray-50 p-3 rounded-md">
+                  <p className="text-sm text-gray-500">Documentos</p>
+                  <p className="font-medium">{selectedClient.documents}</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-md">
+                  <p className="text-sm text-gray-500">Última atividade</p>
+                  <p className="font-medium">{formatDate(selectedClient.lastActive)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter className="sm:justify-between">
+            <Button variant="outline" onClick={() => setShowProfileDialog(false)}>
+              Fechar
+            </Button>
+            <Button 
+              className="bg-w1-teal hover:bg-w1-teal/90"
+              onClick={handleViewFullProfile}
+            >
+              Ver perfil completo
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+            <Button 
+              className="bg-w1-teal hover:bg-w1-teal/90"
+              onClick={handleViewFullProfile}
+            >
+              Ver perfil completo
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

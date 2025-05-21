@@ -23,6 +23,7 @@ import ConfiguracoesPage from "./pages/ConfiguracoesPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardConsultorPage from "./pages/DashboardConsultorPage";
 import AdicionarDocumentoPage from "./pages/AdicionarDocumentoPage";
+import Simulador from "./pages/SimuladorPage";
 
 const queryClient = new QueryClient();
 
@@ -99,6 +100,7 @@ const App = () => {
               
               {/* Shared routes */}
               <Route path="/document-scanner" element={<ProtectedRoute element={<DocumentScannerPage />} />} />
+              <Route path="/simulador" element={<Simulador/>} />
               
               <Route path="*" element={<NotFound />} />
             </Route>

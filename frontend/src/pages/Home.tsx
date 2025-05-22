@@ -11,7 +11,7 @@ const Home = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const [patrimonioTotal, setPatrimonioTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const patrimonioAnterior = 900000; // Valor fixo de exemplo
+  const patrimonioAnterior = 10000; // Valor fixo de exemplo
 
   useEffect(() => {
     const fetchPatrimonioTotal = async () => {

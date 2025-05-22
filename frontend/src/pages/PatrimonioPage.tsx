@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import AdicionarAtivoModal from "@/components/patrimonio/AdicionarAtivoModal";
+import { jwtDecode } from "jwt-decode";
 
 interface Categoria {
   nome: string;
@@ -17,6 +18,15 @@ const PatrimonioPage = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
 
+const decodeToken = (token: string) => {
+  try {
+    return jwtDecode<{ sub: string; exp: number }>(token);
+  } catch (error) {
+    console.error('Erro na decodificação:', error);
+    throw new Error('Token inválido');
+  }
+};
+
   useEffect(() => {
     const fetchPatrimonios = async () => {
       const token = localStorage.getItem('token');
@@ -30,7 +40,6 @@ const PatrimonioPage = () => {
         
         const ativos = await response.json();
         
-        // Processamento dos dados
         const categoriasMap = new Map<string, number>();
         let total = 0;
 
@@ -85,9 +94,20 @@ const PatrimonioPage = () => {
     valor: number;
   }) => {
     try {
+      setLoading(true);
       const token = localStorage.getItem('token');
+      if (!token) throw new Error('Token de autenticação não encontrado');
+  
+      // Decodifica o token para obter o ID do cliente
+      const decodedToken = decodeToken(token);
+      const clienteId = decodedToken?.sub;
+  
+      if (!clienteId) throw new Error('ID do cliente não encontrado no token');
+  
+      // Formata o nome da categoria para consistência
+      const categoriaNome = formatarNomeCategoria(novoAtivo.categoria);
       
-      await fetch(`${API_URL}/api/patrimonios`, {
+      const response = await fetch(`${API_URL}/api/patrimonios`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -95,35 +115,61 @@ const PatrimonioPage = () => {
         },
         body: JSON.stringify({
           ...novoAtivo,
-          categoria: novoAtivo.categoria.toLowerCase()
+          categoria: novoAtivo.categoria.toLowerCase(),
+          clienteId,
+          valor: Number(novoAtivo.valor) // Garante que o valor seja um número
         })
       });
-
-      // Atualiza os estados localmente
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Erro ${response.status}: ${response.statusText}`);
+      }
+  
+      const ativoAdicionado = await response.json();
+      
+      // Atualiza o estado após confirmação do servidor
       setCategorias(prev => {
         const novasCategorias = [...prev];
-        const categoriaExistente = novasCategorias.find(c => c.nome === novoAtivo.categoria);
+        const categoriaExistente = novasCategorias.find(c => 
+          c.nome.toLowerCase() === categoriaNome.toLowerCase()
+        );
         
         if (categoriaExistente) {
-          categoriaExistente.valor += novoAtivo.valor;
-          const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
-          setPatrimonioTotal(novoTotal);
-          
-          // Atualiza porcentagens
-          novasCategorias.forEach(cat => {
-            cat.porcentagem = (cat.valor / novoTotal) * 100;
+          // Atualiza categoria existente
+          categoriaExistente.valor += Number(novoAtivo.valor);
+        } else {
+          // Cria nova categoria
+          novasCategorias.push({
+            nome: categoriaNome,
+            valor: Number(novoAtivo.valor),
+            porcentagem: 0 // Será calculado abaixo
           });
         }
         
+        // Recalcula o total e as porcentagens
+        const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
+        setPatrimonioTotal(novoTotal);
+        
+        novasCategorias.forEach(cat => {
+          cat.porcentagem = (cat.valor / novoTotal) * 100;
+        });
+        
         return novasCategorias;
       });
+  
+     
+      console.log('Ativo adicionado com sucesso!');
       
     } catch (error) {
-      console.error('Erro:', error);
+      console.error('Erro ao adicionar ativo:', error);
+      
     } finally {
       setIsModalOpen(false);
+      setLoading(false);
     }
   };
+  
 
   if (loading) {
     return <div className="p-6 text-center">Carregando dados patrimoniais...</div>;

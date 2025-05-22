@@ -51,6 +51,5 @@ CREATE TABLE patrimonios (
   cliente_id INTEGER REFERENCES clientes(id) ON DELETE CASCADE,
   categoria TEXT NOT NULL,
   valor NUMERIC(12, 2) NOT NULL,
-  data_aquisicao DATE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

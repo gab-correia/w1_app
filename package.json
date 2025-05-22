@@ -1,12 +1,14 @@
 {
   "dependencies": {
-    "@types/react": "^19.1.4",
-    "@types/react-dom": "^19.1.5",
+    "lucide-react": "^0.511.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.21",
+    "@types/react": "^19.1.5",
+    "@types/react-dom": "^19.1.5",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react-swc": "^3.9.0"
   }
 }

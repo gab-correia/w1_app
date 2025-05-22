@@ -1,55 +1,44 @@
-
+// MobileLayout.tsx
 import { useState } from 'react';
-import { Menu, MessageCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import MobileNavbar from './MobileNavbar';
 import Sidebar from './Sidebar';
 import ChatBot from '@/components/ChatBot';
+import Header from '@/components/layout/Header';
 
 const MobileLayout = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between bg-w1-teal text-white p-3 shadow-md">
-        <div className="flex items-center gap-3">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-w1-teal/80">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-72 sm:w-80">
-              <Sidebar />
-            </SheetContent>
-          </Sheet>
-          <Link to="/">
-            <img src="/W1_White.png" alt="W1 Logo" className="h-8" />
-          </Link>
-        </div>
-        
-        <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-w1-teal/80">
-              <MessageCircle className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="p-4 w-full sm:w-[400px]">
-            <ChatBot onClose={() => setIsChatOpen(false)} />
-          </SheetContent>
-        </Sheet>
-      </header>
+      <Header
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        onToggleChat={() => setIsChatOpen(!isChatOpen)}
+      />
+
+      {/* Sidebar Sheet */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetContent side="left" className="p-0 w-72 sm:w-80">
+          <Sidebar />
+        </SheetContent>
+      </Sheet>
+
+      {/* Chat Sheet */}
+      <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+        <SheetContent side="right" className="p-4 w-full sm:w-[400px]">
+          <ChatBot onClose={() => setIsChatOpen(false)} />
+        </SheetContent>
+      </Sheet>
 
       {/* Main content */}
       <main className="flex-1 p-10 pb-4 max-w-8xl md:pb-4 mx-auto w-full">
         <Outlet />
       </main>
 
-      {/* Bottom navigation - only visible on mobile */}
+      {/* Bottom navigation */}
       <div className="md:hidden">
         <MobileNavbar />
       </div>

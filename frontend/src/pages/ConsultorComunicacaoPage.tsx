@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { 
   Phone, 
   Video, 
@@ -199,8 +199,7 @@ const ConsultorComunicacaoPage = () => {
   const [clienteAtivo, setClienteAtivo] = useState<Cliente | null>(clientes[0]);
   const [novaMensagem, setNovaMensagem] = useState('');
   const [pesquisaCliente, setPesquisaCliente] = useState('');
-  const [notificacoes, setNotificacoes] = useState(1);
-  const [showNotificacoes, setShowNotificacoes] = useState(false);
+
   const [anexoSelecionado, setAnexoSelecionado] = useState<File | null>(null);
   const [visualizandoReunioes, setVisualizandoReunioes] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -284,11 +283,6 @@ const ConsultorComunicacaoPage = () => {
     }
   };
 
-  const limparNotificacoes = () => {
-    setNotificacoes(0);
-    setShowNotificacoes(false);
-  };
-
   const formatarData = (data: Date) => {
     return data.toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -310,42 +304,7 @@ const ConsultorComunicacaoPage = () => {
         <h1 className="text-2xl font-bold text-w1-teal">Comunicação com Clientes</h1>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="relative"
-              onClick={() => setShowNotificacoes(!showNotificacoes)}
-            >
-              <Bell className="h-5 w-5" />
-              {notificacoes > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                  {notificacoes}
-                </span>
-              )}
-            </Button>
-            {showNotificacoes && (
-              <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg z-50 border">
-                <div className="p-3 border-b flex justify-between items-center">
-                  <h3 className="font-medium">Notificações</h3>
-                  <Button variant="ghost" size="sm" onClick={limparNotificacoes}>
-                    Limpar
-                  </Button>
-                </div>
-                <div className="max-h-72 overflow-y-auto">
-                  {notificacoes > 0 ? (
-                    <div className="p-3 border-b hover:bg-gray-50">
-                      <p className="text-sm font-medium">Nova mensagem de Pedro Oliveira</p>
-                      <p className="text-xs text-gray-500">Aguardo seu feedback.</p>
-                      <p className="text-xs text-gray-400 mt-1">5 horas atrás</p>
-                    </div>
-                  ) : (
-                    <div className="p-3 text-center text-gray-500 text-sm">
-                      Sem notificações
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+            
           </div>
           
           <Button 

@@ -25,6 +25,7 @@ import DashboardConsultorPage from "./pages/DashboardConsultorPage";
 import AdicionarDocumentoPage from "./pages/AdicionarDocumentoPage";
 import Simulador from "./pages/SimuladorPage";
 import ConsultorComunicacaoPage from "./pages/ConsultorComunicacaoPage";
+import ClientePerfilPage from "./pages/ClientePerfilPage";
 
 const queryClient = new QueryClient();
 
@@ -100,6 +101,7 @@ const App = () => {
               <Route path="/documentos-consultor" element={<ProtectedRoute element={<DocumentosConsultorPage />} allowedUserType="consultant" />} />
               <Route path="/adicionar-documento" element={<ProtectedRoute element={<AdicionarDocumentoPage />} allowedUserType="consultant" />} />
               <Route path="/comunicacao-consultor" element={<ProtectedRoute element={<ConsultorComunicacaoPage />} allowedUserType="consultant" />} />
+              <Route path="/cliente/:id" element={<ProtectedRoute element={<ClientePerfilPage />} allowedUserType="consultant" />} />
               
               {/* Shared routes */}
               <Route path="/document-scanner" element={<ProtectedRoute element={<DocumentScannerPage />} />} />

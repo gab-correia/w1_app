@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, UserPlus, ArrowRight, Eye, Upload, MessageCircle } from "lucide-react";
@@ -105,8 +104,7 @@ const ClientesPage = () => {
   };
   
   const handleViewClient = (client: any) => {
-    setSelectedClient(client);
-    setShowClientDetails(true);
+    navigate(`/cliente/${client.id}`);
   };
   
   const handleUploadRequest = (client: any) => {
@@ -121,7 +119,7 @@ const ClientesPage = () => {
       title: "Chat iniciado",
       description: `Iniciando conversa com ${client.name}.`,
     });
-    // In a real app, this would open a chat interface
+    navigate(`/comunicacao-consultor`);
   };
 
   return (
@@ -168,6 +166,7 @@ const ClientesPage = () => {
                   <th className="text-left font-medium py-3 px-4 hidden sm:table-cell">Email</th>
                   <th className="text-left font-medium py-3 px-4 hidden md:table-cell">Documentos</th>
                   <th className="text-left font-medium py-3 px-4 hidden lg:table-cell">Última Atividade</th>
+                  <th className="text-left font-medium py-3 px-4">Status</th>
                   <th className="text-left font-medium py-3 px-4">Ações</th>
                 </tr>
               </thead>
@@ -178,20 +177,25 @@ const ClientesPage = () => {
                     <td className="py-3 px-4 hidden sm:table-cell">{client.email}</td>
                     <td className="py-3 px-4 hidden md:table-cell">
                       {client.documents} 
-                      {client.pendingDocuments > 0 ? (
+                      {client.pendingDocuments > 0 && (
                         <Badge className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-200">
                           {client.pendingDocuments} pendente(s)
                         </Badge>
-                      ) : (
-                        <Badge className="ml-2 bg-green-100 text-green-800 hover:bg-green-200">
-                          Em dia
-                        </Badge>
-                      )
-                    }
+                      )}
                     </td>
                     <td className="py-3 px-4 hidden lg:table-cell">{formatDate(client.lastActive)}</td>
-                    
-                    <td className="py-3 px-5">
+                    <td className="py-3 px-4">
+                      {client.pendingDocuments > 0 ? (
+                        <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200">
+                          Pendente
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+                          Em dia
+                        </Badge>
+                      )}
+                    </td>
+                    <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <Button 
                           variant="ghost" 
@@ -201,6 +205,16 @@ const ClientesPage = () => {
                           title="Ver detalhes"
                         >
                           <Eye className="h-4 w-4" />
+                        </Button>
+                        
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8"
+                          onClick={() => handleStartChat(client)}
+                          title="Iniciar conversa"
+                        >
+                          <MessageCircle className="h-4 w-4" />
                         </Button>
                       </div>
                     </td>
@@ -269,115 +283,6 @@ const ClientesPage = () => {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
-      
-      {/* Client Details Dialog */}
-      <Dialog open={showClientDetails && !!selectedClient} onOpenChange={setShowClientDetails}>
-        {selectedClient && (
-          <DialogContent className="max-w-3xl">
-            <DialogHeader>
-              <DialogTitle className="text-xl">Detalhes do Cliente</DialogTitle>
-            </DialogHeader>
-            
-            <div className="py-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Informações Pessoais</h3>
-                  
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-sm text-gray-500">Nome</p>
-                      <p className="font-medium">{selectedClient.name}</p>
-                    </div>
-                    
-                    <div>
-                      <p className="text-sm text-gray-500">Email</p>
-                      <p>{selectedClient.email}</p>
-                    </div>
-                    
-                    <div>
-                      <p className="text-sm text-gray-500">Telefone</p>
-                      <p>{selectedClient.phone}</p>
-                    </div>
-                    
-                    <div>
-                      <p className="text-sm text-gray-500">Última atividade</p>
-                      <p>{formatDate(selectedClient.lastActive)}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 space-y-3">
-                    <Button className="w-full flex items-center justify-center gap-2" onClick={() => navigate(`/cliente/${selectedClient.id}/perfil`)}>
-                      Ver perfil completo
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                    
-                    <Button variant="outline" className="w-full" onClick={() => {
-                      handleStartChat(selectedClient);
-                      setShowClientDetails(false);
-                    }}>
-                      Iniciar conversa
-                    </Button>
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Documentos</h3>
-                  
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <p className="text-sm text-gray-500">Total de documentos</p>
-                      <p className="font-medium">{selectedClient.documents}</p>
-                    </div>
-                    
-                    <div className="flex justify-between">
-                      <p className="text-sm text-gray-500">Documentos pendentes</p>
-                      <p className="font-medium text-amber-600">{selectedClient.pendingDocuments}</p>
-                    </div>
-                    
-                    <div className="flex justify-between">
-                      <p className="text-sm text-gray-500">Status</p>
-                      {selectedClient.pendingDocuments > 0 ? (
-                        <Badge className="bg-amber-100 text-amber-800">Pendente</Badge>
-                      ) : (
-                        <Badge className="bg-green-100 text-green-800">Em dia</Badge>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 space-y-3">
-                    <Button 
-                      className="w-full bg-w1-teal hover:bg-w1-teal/90" 
-                      onClick={() => {
-                        navigate(`/cliente/${selectedClient.id}/documentos`);
-                        setShowClientDetails(false);
-                      }}
-                    >
-                      Ver documentos
-                    </Button>
-                    
-                    <Button 
-                      variant="outline" 
-                      className="w-full" 
-                      onClick={() => {
-                        handleUploadRequest(selectedClient);
-                        setShowClientDetails(false);
-                      }}
-                    >
-                      Solicitar novos documentos
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setShowClientDetails(false)}>
-                Fechar
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        )}
       </Dialog>
     </div>
   );

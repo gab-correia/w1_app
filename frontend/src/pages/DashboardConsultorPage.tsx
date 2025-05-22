@@ -51,7 +51,6 @@ const DashboardConsultorPage = () => {
     doc.type.toLowerCase().includes(searchDocument.toLowerCase())
   );
   
-  // Format date to Brazilian format
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');
@@ -64,7 +63,7 @@ const DashboardConsultorPage = () => {
 
   const handleViewFullProfile = () => {
     if (selectedClient) {
-      navigate(`/cliente/${selectedClient.id}/perfil`);
+      navigate(`/cliente/${selectedClient.id}`);
       setShowProfileDialog(false);
     }
   };

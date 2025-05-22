@@ -70,9 +70,8 @@ const Sidebar = () => {
     { icon: <Home className="h-5 w-5" />, label: 'Dashboard', path: '/dashboard-consultor' },
     { icon: <Users className="h-5 w-5" />, label: 'Clientes', path: '/clientes' },
     { icon: <BarChart3 className="h-5 w-5" />, label: 'Simulador', path: '/simulador' },
-    { icon: <Settings className="h-5 w-5" />, label: 'Configurações', path: '/configuracoes' },
     { icon: <MessageCircle className="h-5 w-5" />, label: 'Comunicação', path: '/comunicacao-consultor' },
-    
+    { icon: <Settings className="h-5 w-5" />, label: 'Configurações', path: '/configuracoes' },
   ];
 
   const menuItems = isConsultant ? consultantMenuItems : clientMenuItems;

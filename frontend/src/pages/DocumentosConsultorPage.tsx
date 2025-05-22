@@ -21,7 +21,7 @@ const mockDocuments = [
   { id: 5, name: "Relatório Patrimonial", type: "Relatório", createdAt: "2023-02-28", createdBy: "João Consultor", clientsShared: 7 },
 ];
 
-// Mock data for clients
+// Mock data for clients  
 const mockClients = [
   { id: 1, name: "João Silva", email: "joao.silva@exemplo.com" },
   { id: 2, name: "Maria Oliveira", email: "maria.oliveira@exemplo.com" },

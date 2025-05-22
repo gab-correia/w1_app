@@ -107,13 +107,6 @@ const ClientesPage = () => {
     navigate(`/cliente/${client.id}`);
   };
   
-  const handleUploadRequest = (client: any) => {
-    toast({
-      title: "Solicitação enviada",
-      description: `Solicitação enviada para ${client.name}.`,
-    });
-  };
-  
   const handleStartChat = (client: any) => {
     toast({
       title: "Chat iniciado",

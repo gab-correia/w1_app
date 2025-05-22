@@ -87,7 +87,6 @@ const App = () => {
               <Route path="/patrimonio" element={<ProtectedRoute element={<PatrimonioPage />} allowedUserType="client" />} />
               <Route path="/holdings" element={<ProtectedRoute element={<HoldingsPage />} allowedUserType="client" />} />
               <Route path="/holdings/criar" element={<ProtectedRoute element={<CriarHoldingPage />} allowedUserType="client" />} />
-              <Route path="/holdings/:id" element={<ProtectedRoute element={<HoldingDetalhesPage />} allowedUserType="client" />} />
               <Route path="/sucessorio" element={<ProtectedRoute element={<SucessorioPage />} allowedUserType="client" />} />
               <Route path="/documentos" element={<ProtectedRoute element={<DocumentosPage />} allowedUserType="client" />} />
               <Route path="/metas" element={<ProtectedRoute element={<MetasPage />} allowedUserType="client" />} />
@@ -106,6 +105,7 @@ const App = () => {
               {/* Shared routes */}
               <Route path="/document-scanner" element={<ProtectedRoute element={<DocumentScannerPage />} />} />
               <Route path="/simulador" element={<Simulador/>} />
+              <Route path="/holdings/:id" element={<ProtectedRoute element={<HoldingDetalhesPage />}/>} />
               
               
               <Route path="*" element={<NotFound />} />

@@ -323,7 +323,7 @@ const ClientePerfilPage = () => {
               {cliente.holdings.length > 0 ? (
                 <div className="space-y-4">
                   {cliente.holdings.map((holding) => (
-                    <Card key={holding.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate(`/holdings/${holding.id}`)}>
+                    <Card key={holding.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate(`/holdings/${cliente.id}`)}>
                       <CardContent className="p-4">
                         <div className="flex justify-between items-center">
                           <div>

@@ -86,7 +86,7 @@ const PatrimonioPage = () => {
   }) => {
     try {
       const token = localStorage.getItem('token');
-      
+
       await fetch(`${API_URL}/api/patrimonios`, {
         method: 'POST',
         headers: {
@@ -95,11 +95,10 @@ const PatrimonioPage = () => {
         },
         body: JSON.stringify({
           ...novoAtivo,
+
           categoria: novoAtivo.categoria.toLowerCase()
         })
       });
-
-      // Atualiza os estados localmente
       setCategorias(prev => {
         const novasCategorias = [...prev];
         const categoriaExistente = novasCategorias.find(c => c.nome === novoAtivo.categoria);
@@ -108,8 +107,7 @@ const PatrimonioPage = () => {
           categoriaExistente.valor += novoAtivo.valor;
           const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
           setPatrimonioTotal(novoTotal);
-          
-          // Atualiza porcentagens
+
           novasCategorias.forEach(cat => {
             cat.porcentagem = (cat.valor / novoTotal) * 100;
           });
@@ -117,9 +115,10 @@ const PatrimonioPage = () => {
         
         return novasCategorias;
       });
-      
+
     } catch (error) {
-      console.error('Erro:', error);
+      console.error('Erro ao adicionar ativo:', error);
+
     } finally {
       setIsModalOpen(false);
     }

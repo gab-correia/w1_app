@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import AdicionarAtivoModal from "@/components/patrimonio/AdicionarAtivoModal";
-import { jwtDecode } from "jwt-decode";
 
 interface Categoria {
   nome: string;
@@ -18,14 +17,17 @@ const PatrimonioPage = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
 
-const decodeToken = (token: string) => {
-  try {
-    return jwtDecode<{ sub: string; exp: number }>(token);
-  } catch (error) {
-    console.error('Erro na decodificação:', error);
-    throw new Error('Token inválido');
-  }
-};
+  // Função para decodificar o token JWT
+  const decodeToken = (token: string) => {
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const decodedPayload = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
+      return JSON.parse(decodedPayload);
+    } catch (error) {
+      console.error('Erro ao decodificar token:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const fetchPatrimonios = async () => {
@@ -94,20 +96,16 @@ const decodeToken = (token: string) => {
     valor: number;
   }) => {
     try {
-      setLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Token de autenticação não encontrado');
-  
+
       // Decodifica o token para obter o ID do cliente
       const decodedToken = decodeToken(token);
-      const clienteId = decodedToken?.sub;
-  
+      const clienteId = decodedToken?.sub; // Ajuste conforme estrutura do seu token
+
       if (!clienteId) throw new Error('ID do cliente não encontrado no token');
-  
-      // Formata o nome da categoria para consistência
-      const categoriaNome = formatarNomeCategoria(novoAtivo.categoria);
-      
-      const response = await fetch(`${API_URL}/api/patrimonios`, {
+
+      await fetch(`${API_URL}/api/patrimonios`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -116,60 +114,34 @@ const decodeToken = (token: string) => {
         body: JSON.stringify({
           ...novoAtivo,
           categoria: novoAtivo.categoria.toLowerCase(),
-          clienteId,
-          valor: Number(novoAtivo.valor) // Garante que o valor seja um número
+          clienteId // ID do cliente incluído no payload
         })
       });
-  
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Erro ${response.status}: ${response.statusText}`);
-      }
-  
-      const ativoAdicionado = await response.json();
-      
-      // Atualiza o estado após confirmação do servidor
+
+      // Atualização otimista do estado
       setCategorias(prev => {
         const novasCategorias = [...prev];
-        const categoriaExistente = novasCategorias.find(c => 
-          c.nome.toLowerCase() === categoriaNome.toLowerCase()
-        );
+        const categoriaExistente = novasCategorias.find(c => c.nome === novoAtivo.categoria);
         
         if (categoriaExistente) {
-          // Atualiza categoria existente
-          categoriaExistente.valor += Number(novoAtivo.valor);
-        } else {
-          // Cria nova categoria
-          novasCategorias.push({
-            nome: categoriaNome,
-            valor: Number(novoAtivo.valor),
-            porcentagem: 0 // Será calculado abaixo
+          categoriaExistente.valor += novoAtivo.valor;
+          const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
+          setPatrimonioTotal(novoTotal);
+          
+          novasCategorias.forEach(cat => {
+            cat.porcentagem = (cat.valor / novoTotal) * 100;
           });
         }
         
-        // Recalcula o total e as porcentagens
-        const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
-        setPatrimonioTotal(novoTotal);
-        
-        novasCategorias.forEach(cat => {
-          cat.porcentagem = (cat.valor / novoTotal) * 100;
-        });
-        
         return novasCategorias;
       });
-  
-     
-      console.log('Ativo adicionado com sucesso!');
-      
+
     } catch (error) {
       console.error('Erro ao adicionar ativo:', error);
-      
     } finally {
       setIsModalOpen(false);
-      setLoading(false);
     }
   };
-  
 
   if (loading) {
     return <div className="p-6 text-center">Carregando dados patrimoniais...</div>;

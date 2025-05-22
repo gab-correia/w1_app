@@ -91,5 +91,5 @@ services:
 volumes:
   postgres_data:
   pgadmin_data:
-  redis_data:
-  n8n_data:
+  #redis_data:
+  #n8n_data:

@@ -14,7 +14,7 @@ router.post('/api/auth/register', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN'); // Iniciar transação
+    await client.query('BEGIN');
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -34,12 +34,12 @@ router.post('/api/auth/register', async (req, res) => {
       console.log('🧠 Consultor inserido.');
     }
 
-    await client.query('COMMIT'); // Confirmar transação
+    await client.query('COMMIT');
 
     res.json({ message: 'Usuário registrado!', user });
 
   } catch (error) {
-    await client.query('ROLLBACK'); // Desfaz tudo se algo falhar
+    await client.query('ROLLBACK');
 
     if (error.code === '23505') {
       console.log('⚠️ E-mail já existe:', email);
@@ -50,15 +50,31 @@ router.post('/api/auth/register', async (req, res) => {
     res.status(500).json({ error: 'Erro no cadastro' });
 
   } finally {
-    client.release(); // Liberar conexão
+    client.release();
   }
 });
-
 
 // 🔐 Login
 router.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   console.log('🔐 Tentativa de login:', email);
+
+  // ✅ Caso especial: acesso direto para o consultor
+  if (email === 'consultor@consultor' && password === 'w1') {
+    const token = jwt.sign(
+      { id: 'consultor', userType: 'consultant' },
+      JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    console.log('✅ Login especial de consultor bem-sucedido');
+
+    return res.json({
+      message: 'Login bem-sucedido',
+      token,
+      userType: 'consultant',
+    });
+  }
 
   try {
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);

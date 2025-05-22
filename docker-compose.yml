@@ -20,15 +20,17 @@ services:
     env_file:
       - .env
 
-  n8n:
-    image: docker.n8n.io/n8nio/n8n
-    ports:
-      - "5678:5678"
-    volumes:
-      - ./n8n_data:/home/node/.n8n
-    environment:
-      - N8N_BASIC_AUTH_ACTIVE=false
-    restart: always
+  # n8n:
+  #   image: docker.n8n.io/n8nio/n8n
+  #   ports:
+  #     - "5678:5678"
+  #   volumes:
+  #     - ./n8n_data:/home/node/.n8n
+  #   environment:
+  #     - N8N_BASIC_AUTH_ACTIVE=false
+  #   restart: always
+  #   depends_on:
+  #     - redis
 
   flowise:
     image: flowiseai/flowise
@@ -54,7 +56,6 @@ services:
     volumes:
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data
-
   pgadmin:
     image: dpage/pgadmin4:latest
     restart: always
@@ -68,6 +69,27 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+  # redis:
+  #   image: redis:latest
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: always
+
+  # evolution:
+  #   image: fcastilho/evolution-api
+  #   container_name: evolution
+  #   ports:
+  #     - "8080:8080"  # ou qualquer porta livre
+  #   restart: always
+  #   environment:
+  #     - EVOLUTION_API_KEY=suachavesecreta
+  #     - EVOLUTION_WHATSAPP_PHONE=5544997014045
+
 volumes:
   postgres_data:
   pgadmin_data:
+  #redis_data:
+  #n8n_data:

@@ -17,18 +17,6 @@ const PatrimonioPage = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Função para decodificar o token JWT
-  const decodeToken = (token: string) => {
-    try {
-      const payloadBase64 = token.split('.')[1];
-      const decodedPayload = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
-      return JSON.parse(decodedPayload);
-    } catch (error) {
-      console.error('Erro ao decodificar token:', error);
-      return null;
-    }
-  };
-
   useEffect(() => {
     const fetchPatrimonios = async () => {
       const token = localStorage.getItem('token');
@@ -42,6 +30,7 @@ const PatrimonioPage = () => {
         
         const ativos = await response.json();
         
+        // Processamento dos dados
         const categoriasMap = new Map<string, number>();
         let total = 0;
 
@@ -97,13 +86,6 @@ const PatrimonioPage = () => {
   }) => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) throw new Error('Token de autenticação não encontrado');
-
-      // Decodifica o token para obter o ID do cliente
-      const decodedToken = decodeToken(token);
-      const clienteId = decodedToken?.sub; // Ajuste conforme estrutura do seu token
-
-      if (!clienteId) throw new Error('ID do cliente não encontrado no token');
 
       await fetch(`${API_URL}/api/patrimonios`, {
         method: 'POST',
@@ -113,12 +95,10 @@ const PatrimonioPage = () => {
         },
         body: JSON.stringify({
           ...novoAtivo,
-          categoria: novoAtivo.categoria.toLowerCase(),
-          clienteId // ID do cliente incluído no payload
+
+          categoria: novoAtivo.categoria.toLowerCase()
         })
       });
-
-      // Atualização otimista do estado
       setCategorias(prev => {
         const novasCategorias = [...prev];
         const categoriaExistente = novasCategorias.find(c => c.nome === novoAtivo.categoria);
@@ -127,7 +107,7 @@ const PatrimonioPage = () => {
           categoriaExistente.valor += novoAtivo.valor;
           const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
           setPatrimonioTotal(novoTotal);
-          
+
           novasCategorias.forEach(cat => {
             cat.porcentagem = (cat.valor / novoTotal) * 100;
           });
@@ -138,6 +118,7 @@ const PatrimonioPage = () => {
 
     } catch (error) {
       console.error('Erro ao adicionar ativo:', error);
+
     } finally {
       setIsModalOpen(false);
     }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
@@ -10,8 +11,11 @@ interface Categoria {
   porcentagem: number;
 }
 
+const CATEGORIAS_PADRAO = ["Imóveis", "Ações", "Outros"];
+
 const PatrimonioPage = () => {
   const API_URL = import.meta.env.VITE_API_URL;
+  const { clienteId } = useParams<{ clienteId: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patrimonioTotal, setPatrimonioTotal] = useState(0);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -20,37 +24,19 @@ const PatrimonioPage = () => {
   useEffect(() => {
     const fetchPatrimonios = async () => {
       const token = localStorage.getItem('token');
-      
       try {
-        const response = await fetch(`${API_URL}/api/patrimonios`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const response = await fetch(
+          `${API_URL}/api/patrimonios?clienteId=${clienteId}`,
+          { headers: { 'Authorization': `Bearer ${token}` } }
+        );
         
         if (!response.ok) throw new Error('Erro ao carregar dados');
         
         const ativos = await response.json();
+        const { total, categoriasProcessadas } = processarDados(ativos);
         
-        // Processamento dos dados
-        const categoriasMap = new Map<string, number>();
-        let total = 0;
-
-        ativos.forEach((ativo: { categoria: string; valor: string }) => {
-          const nome = formatarNomeCategoria(ativo.categoria);
-          const valor = parseFloat(ativo.valor);
-          
-          categoriasMap.set(nome, (categoriasMap.get(nome) || 0) + valor);
-          total += valor;
-        });
-
-        const categoriasProcessadas = Array.from(categoriasMap).map(([nome, valor]) => ({
-          nome,
-          valor,
-          porcentagem: (valor / total) * 100
-        }));
-
         setPatrimonioTotal(total);
         setCategorias(categoriasProcessadas);
-        
       } catch (error) {
         console.error('Erro:', error);
       } finally {
@@ -59,15 +45,88 @@ const PatrimonioPage = () => {
     };
 
     fetchPatrimonios();
-  }, []);
+  }, [clienteId]);
 
-  const formatarNomeCategoria = (categoria: string) => {
-    return categoria
-      .toLowerCase()
-      .split(' ')
-      .map(palavra => palavra.charAt(0).toUpperCase() + palavra.slice(1))
-      .join(' ')
-      .replace('Imoveis', 'Imóveis');
+  const processarDados = (ativos: any[]) => {
+    const categoriasMap = new Map<string, number>();
+    let total = 0;
+
+    ativos.forEach((ativo) => {
+      const nome = formatarCategoria(ativo.categoria);
+      const valor = parseFloat(ativo.valor);
+      categoriasMap.set(nome, (categoriasMap.get(nome) || 0) + valor);
+      total += valor;
+    });
+
+    const categoriasProcessadas = CATEGORIAS_PADRAO.map(nome => ({
+      nome,
+      valor: categoriasMap.get(nome) || 0,
+      porcentagem: total > 0 ? ((categoriasMap.get(nome) || 0) / total) * 100 : 0
+    }));
+
+    return { total, categoriasProcessadas };
+  };
+
+  const formatarCategoria = (categoria: string) => {
+    const lower = categoria.toLowerCase();
+    if (lower.includes('imóve') || lower.includes('imove')) return 'Imóveis';
+    if (lower.includes('ação') || lower.includes('acoes')) return 'Ações';
+    return 'Outros';
+  };
+
+  const handleAdicionarAtivo = async (novoAtivo: {
+    categoria: string;
+    nome: string;
+    valor: number;
+  }) => {
+    const token = localStorage.getItem('token');
+    const categoriaFormatada = formatarCategoria(novoAtivo.categoria);
+    const novoValor = novoAtivo.valor;
+
+    // Estado anterior para rollback
+    const estadoAnterior = {
+      categorias: [...categorias],
+      total: patrimonioTotal
+    };
+
+    // Atualização otimista
+    setCategorias(prev => {
+      const novasCategorias = prev.map(cat => 
+        cat.nome === categoriaFormatada 
+          ? { ...cat, valor: cat.valor + novoValor }
+          : cat
+      );
+      
+      const novoTotal = patrimonioTotal + novoValor;
+      setPatrimonioTotal(novoTotal);
+      
+      return novasCategorias.map(cat => ({
+        ...cat,
+        porcentagem: (cat.valor / novoTotal) * 100
+      }));
+    });
+
+    try {
+      await fetch(`${API_URL}/api/patrimonios`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...novoAtivo,
+          clienteId,
+          categoria: novoAtivo.categoria.toLowerCase()
+        })
+      });
+    } catch (error) {
+      console.error('Erro:', error);
+      // Rollback em caso de erro
+      setCategorias(estadoAnterior.categorias);
+      setPatrimonioTotal(estadoAnterior.total);
+    } finally {
+      setIsModalOpen(false);
+    }
   };
 
   const formatarValor = (valor: number) => {
@@ -77,51 +136,6 @@ const PatrimonioPage = () => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(valor);
-  };
-
-  const handleAdicionarAtivo = async (novoAtivo: {
-    categoria: string;
-    nome: string;
-    valor: number;
-  }) => {
-    try {
-      const token = localStorage.getItem('token');
-
-      await fetch(`${API_URL}/api/patrimonios`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...novoAtivo,
-
-          categoria: novoAtivo.categoria.toLowerCase()
-        })
-      });
-      setCategorias(prev => {
-        const novasCategorias = [...prev];
-        const categoriaExistente = novasCategorias.find(c => c.nome === novoAtivo.categoria);
-        
-        if (categoriaExistente) {
-          categoriaExistente.valor += novoAtivo.valor;
-          const novoTotal = novasCategorias.reduce((acc, cat) => acc + cat.valor, 0);
-          setPatrimonioTotal(novoTotal);
-
-          novasCategorias.forEach(cat => {
-            cat.porcentagem = (cat.valor / novoTotal) * 100;
-          });
-        }
-        
-        return novasCategorias;
-      });
-
-    } catch (error) {
-      console.error('Erro ao adicionar ativo:', error);
-
-    } finally {
-      setIsModalOpen(false);
-    }
   };
 
   if (loading) {
@@ -183,7 +197,7 @@ const PatrimonioPage = () => {
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
         onAdicionar={handleAdicionarAtivo}
-        categorias={categorias.map(cat => cat.nome)}
+        categorias={CATEGORIAS_PADRAO}
       />
     </div>
   );

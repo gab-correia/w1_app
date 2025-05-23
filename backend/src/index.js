@@ -92,6 +92,36 @@ app.get('/api/patrimonios', autenticarJWT, async (req, res) => {
   }
 });
 
+app.post('/clientes/:clienteId/patrimonios', autenticarJWT, async (req, res) => {
+  try {
+    const { clienteId } = req.params;
+    const { categoria, nome, valor } = req.body;
+
+    // Validação básica
+    if (!categoria || !nome || !valor) {
+      return res.status(400).json({ error: 'Dados incompletos' });
+    }
+
+    // Conexão segura com o pool
+    const result = await pool.query(
+      `INSERT INTO patrimonios 
+        (cliente_id, categoria, nome, valor) 
+       VALUES ($1, $2, $3, $4) 
+       RETURNING *`,
+      [clienteId, categoria, nome, valor]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro no servidor:', error);
+    res.status(500).json({ 
+      error: 'Erro interno do servidor',
+      details: error.message 
+    });
+  }
+});
+
+
 // Rotas de autenticação
 app.use(authRoutes);
 

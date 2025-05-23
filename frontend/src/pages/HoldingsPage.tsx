@@ -63,12 +63,6 @@ const HoldingsPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-w1-teal">Holdings</h1>
-        <Link to="/holdings/criar">
-          <Button size="sm" className="bg-w1-mint text-w1-teal hover:bg-w1-mint/80">
-            <PlusCircle className="mr-1 h-4 w-4" />
-            Nova Holding
-          </Button>
-        </Link>
       </div>
 
       <div className="space-y-4">

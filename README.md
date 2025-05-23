@@ -96,7 +96,8 @@ aplicativo-w1/
 
 ### 🆕 Crie sua Conta
 
-Sinta-se à vontade para criar uma conta como cliente diretamente na interface do aplicativo.Basta clicar na opção **Registrar-se**. 
+Sinta-se à vontade para criar uma conta como cliente diretamente na interface do aplicativo. Basta clicar na opção **Registrar-se**. 
+
 ---
 
 ## 📝 Notas Adicionais

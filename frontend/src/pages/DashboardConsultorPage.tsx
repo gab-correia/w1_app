@@ -1,10 +1,8 @@
-
 import { useState } from "react";
 import { 
   FileText, 
   FilePlus, 
   Users, 
-  Upload,
   Search,
   User
 } from "lucide-react";
@@ -15,14 +13,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
-// Mock data for clients
+// Mock data for clients (agora com status)
 const mockClients = [
-  { id: 1, name: "João Silva", email: "joao.silva@exemplo.com", documents: 8, lastActive: "2023-05-16" },
-  { id: 2, name: "Maria Oliveira", email: "maria.oliveira@exemplo.com", documents: 12, lastActive: "2023-05-15" },
-  { id: 3, name: "Carlos Santos", email: "carlos.santos@exemplo.com", documents: 5, lastActive: "2023-05-10" },
-  { id: 4, name: "Ana Pereira", email: "ana.pereira@exemplo.com", documents: 15, lastActive: "2023-05-08" },
-  { id: 5, name: "Roberto Costa", email: "roberto.costa@exemplo.com", documents: 3, lastActive: "2023-05-05" },
+  { id: 1, name: "João Silva", email: "joao.silva@exemplo.com", status: "em dia", lastActive: "2023-05-16" },
+  { id: 2, name: "Maria Oliveira", email: "maria.oliveira@exemplo.com", status: "pendente", lastActive: "2023-05-15" },
+  { id: 3, name: "Carlos Santos", email: "carlos.santos@exemplo.com", status: "conectar", lastActive: "2023-05-10" },
+  { id: 4, name: "Ana Pereira", email: "ana.pereira@exemplo.com", status: "em dia", lastActive: "2023-05-08" },
+  { id: 5, name: "Roberto Costa", email: "roberto.costa@exemplo.com", status: "pendente", lastActive: "2023-05-05" },
 ];
 
 // Mock data for document templates
@@ -33,6 +32,34 @@ const mockDocumentTemplates = [
   { id: 4, name: "Planejamento Sucessório", type: "Estratégico", createdAt: "2023-03-15" },
   { id: 5, name: "Relatório Patrimonial", type: "Financeiro", createdAt: "2023-02-28" },
 ];
+
+// Função para retornar o badge de status
+const getStatusBadge = (status: string) => {
+  const statusConfig = {
+    "em dia": {
+      text: "Em Dia",
+      className: "bg-green-100 text-green-800 border-green-200 hover:bg-green-100"
+    },
+    "pendente": {
+      text: "Pendente", 
+      className: "bg-red-100 text-red-800 border-red-200 hover:bg-red-100"
+    },
+    "conectar": {
+      text: "Contatar",
+      className: "bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-100"
+    }
+  };
+
+  const config = statusConfig[status as keyof typeof statusConfig];
+  return (
+    <Badge 
+      variant="outline" 
+      className={config.className}
+    >
+      {config.text}
+    </Badge>
+  );
+};
 
 const DashboardConsultorPage = () => {
   const navigate = useNavigate();
@@ -118,7 +145,6 @@ const DashboardConsultorPage = () => {
                 <Users className="h-5 w-5 text-w1-teal" />
                 <span>Ver Clientes</span>
               </Button>
-             
             </div>
           </CardContent>
         </Card>
@@ -135,7 +161,6 @@ const DashboardConsultorPage = () => {
             <span>Documentos Modelo</span>
           </TabsTrigger>
         </TabsList>
-
         <TabsContent value="clients">
           <Card>
             <CardHeader>
@@ -162,7 +187,7 @@ const DashboardConsultorPage = () => {
                     <tr className="border-b">
                       <th className="text-left font-medium py-3 px-4">Nome</th>
                       <th className="text-left font-medium py-3 px-4">Email</th>
-                      <th className="text-left font-medium py-3 px-4">Documentos</th>
+                      <th className="text-left font-medium py-3 px-4">Status do Cliente</th>
                       <th className="text-left font-medium py-3 px-4">Última Atividade</th>
                       <th className="text-left font-medium py-3 px-4">Ações</th>
                     </tr>
@@ -172,11 +197,11 @@ const DashboardConsultorPage = () => {
                       <tr key={client.id} className="border-b hover:bg-gray-50">
                         <td className="py-3 px-4">{client.name}</td>
                         <td className="py-3 px-4">{client.email}</td>
-                        <td className="py-3 px-4">{client.documents}</td>
+                        <td className="py-3 px-4">{getStatusBadge(client.status)}</td>
                         <td className="py-3 px-4">{formatDate(client.lastActive)}</td>
                         <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                        <Button 
+                          <div className="flex items-center gap-2">
+                            <Button 
                               variant="ghost" 
                               size="sm" 
                               onClick={() => handleViewProfile(client)}
@@ -184,7 +209,7 @@ const DashboardConsultorPage = () => {
                             >
                               <User className="h-4 w-4" />
                               Ver perfil
-                        </Button>
+                            </Button>
                           </div>
                         </td>
                       </tr>
@@ -262,47 +287,7 @@ const DashboardConsultorPage = () => {
         </TabsContent>
       </Tabs>
 
-    {/* Profile Dialog */}
-    <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Perfil do Cliente</DialogTitle>
-            <DialogDescription>
-              Informações rápidas sobre o cliente
-            </DialogDescription>
-          </DialogHeader>
-          
-          {selectedClient && (
-            <div className="flex flex-col items-center space-y-4 p-2">
-              <Avatar className="h-24 w-24">
-                <AvatarImage src="/profile-placeholder.jpg" alt={selectedClient.name} />
-                <AvatarFallback className="bg-w1-mint text-w1-teal text-xl">
-                  {selectedClient.name.split(' ').map((n: string) => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-              
-              <div className="text-center">
-                <h3 className="text-lg font-medium">{selectedClient.name}</h3>
-                <p className="text-sm text-gray-500">{selectedClient.email}</p>
-              </div>
-              
-              <div className="w-full grid grid-cols-2 gap-3 pt-4">
-                <div className="bg-gray-50 p-3 rounded-md">
-                  <p className="text-sm text-gray-500">Documentos</p>
-                  <p className="font-medium">{selectedClient.documents}</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded-md">
-                  <p className="text-sm text-gray-500">Última atividade</p>
-                  <p className="font-medium">{formatDate(selectedClient.lastActive)}</p>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <DialogFooter className="sm:justify-between">
-            <Button variant="outline" onClick={() => setShowProfileDialog(false)}>
-              Fechar
-            </Button>{/* Profile Dialog */}
+      {/* Profile Dialog */}
       <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -328,8 +313,8 @@ const DashboardConsultorPage = () => {
               
               <div className="w-full grid grid-cols-2 gap-3 pt-4">
                 <div className="bg-gray-50 p-3 rounded-md">
-                  <p className="text-sm text-gray-500">Documentos</p>
-                  <p className="font-medium">{selectedClient.documents}</p>
+                  <p className="text-sm text-gray-500">Status</p>
+                  <div>{getStatusBadge(selectedClient.status)}</div>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-md">
                   <p className="text-sm text-gray-500">Última atividade</p>
@@ -343,15 +328,6 @@ const DashboardConsultorPage = () => {
             <Button variant="outline" onClick={() => setShowProfileDialog(false)}>
               Fechar
             </Button>
-            <Button 
-              className="bg-w1-teal hover:bg-w1-teal/90"
-              onClick={handleViewFullProfile}
-            >
-              Ver perfil completo
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
             <Button 
               className="bg-w1-teal hover:bg-w1-teal/90"
               onClick={handleViewFullProfile}

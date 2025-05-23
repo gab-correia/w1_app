@@ -76,6 +76,23 @@ router.post('/api/auth/login', async (req, res) => {
     });
   }
 
+  // ✅ Caso especial: acesso direto para o cliente
+  if (email === 'cliente@cliente' && password === 'w1') {
+    const token = jwt.sign(
+      { id: 'cliente', userType: 'client' },
+      JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    console.log('✅ Login especial de cliente bem-sucedido');
+
+    return res.json({
+      message: 'Login bem-sucedido',
+      token,
+      userType: 'client',
+    });
+  }
+
   try {
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 

@@ -40,10 +40,8 @@ const HoldingSimulator:React.FC<HoldingSimulatorProps> = ({ mode, onUpdateResult
       successionEfficiency: calculateSuccessionEfficiency()
     })
   );
-
-    onUpdateResults();  
-
-    navigate('/Simulador'); 
+    console.log('Navegar')
+    navigate('/simulador'); 
   };
 
 

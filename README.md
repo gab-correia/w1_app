@@ -13,6 +13,19 @@ Este é um WebApp full-stack construído para gestão de holdings e planejamento
 
 ---
 
+## 📂 Estrutura do Projeto
+
+```plaintext
+aplicativo-w1/
+├── backend/        # Servidor Express com API
+├── frontend/       # Interface React + Vite
+├── flowise/        # Container com Flowise
+├── flowise_data/   # Dados persistentes do Flowise
+└── docker-compose.yml
+```
+
+---
+
 ## 🧰 Requisitos para rodar o projeto
 
 ### ✅ Linux
@@ -32,8 +45,10 @@ Este é um WebApp full-stack construído para gestão de holdings e planejamento
 3. **Clone o repositório e inicie o projeto**:
     ```bash
     git clone https://github.com/gab-correia/aplicativo-w1
-    cd aplicativo-w1
+    cd w1_app
     docker-compose up --build
+    ./restore.sh
+    backup-2025-05-22_20-02-16.sql
     ```
 
 ---
@@ -53,38 +68,57 @@ Este é um WebApp full-stack construído para gestão de holdings e planejamento
       git clone https://github.com/seu-usuario/aplicativo-w1.git
       cd aplicativo-w1
       docker-compose up --build
+      ./restore.sh
+      backup-2025-05-22_20-02-16.sql
       ```
 
 4. **Verifique os containers**:
     - Certifique-se de que todos os containers estão em execução no Docker Desktop.
 
---- 
-
-## 📂 Estrutura do Projeto
-
-```plaintext
-aplicativo-w1/
-├── backend/        # Servidor Express com API
-├── frontend/       # Interface React + Vite
-├── flowise/        # Container com Flowise
-├── flowise_data/   # Dados persistentes do Flowise
-└── docker-compose.yml
-```
-
 ---
 
 ## 🛠️ Como acessar o projeto
 
-1. **Frontend**: Acesse `http://localhost:3000` no navegador para visualizar a interface do aplicativo.
+1. **Frontend**: Acesse `http://localhost:4000` no navegador para visualizar a interface do aplicativo.
 2. **Backend**: A API estará disponível em `http://localhost:5000`.
-3. **Flowise**: Acesse `http://localhost:8080` para interagir com o motor de IA.
+3. **Flowise**: Acesse `http://localhost:3001` para interagir com o motor de IA.
 
+---
+### 🔑 Credenciais de Acesso
+
+#### Cliente
+- **Login**: `danilo@123`
+- **Senha**: `123`
+
+#### Consultor
+- **Login**: `consultor@consultor`
+- **Senha**: `w1`
+
+### 🆕 Crie sua Conta
+
+Sinta-se à vontade para criar uma conta como cliente diretamente na interface do aplicativo.Basta clicar na opção **Registrar-se**. 
 ---
 
 ## 📝 Notas Adicionais
 
 - Certifique-se de que o Docker e o Docker Compose estão corretamente instalados e configurados.
 - Caso encontre problemas de permissão com o Docker, reinicie o sistema após adicionar o usuário ao grupo Docker.
-- Para persistência de dados, os volumes do Docker são configurados automaticamente.
+### ❗ Problemas Comuns
+
+#### 🛠️ Falha ao executar `./restore.sh` por falta de permissão
+
+Caso encontre problemas de permissão ao tentar executar o script `./restore.sh`, siga os passos abaixo:
+
+1. **Dê permissão de execução ao script**:
+    ```bash
+    chmod +x restore.sh
+    ```
+
+2. **Execute o script novamente**:
+    ```bash
+    ./restore.sh
+    ```
+
+Se o problema persistir, verifique se você está no diretório correto e se possui as permissões necessárias para executar scripts no sistema.
 
 Agora você está pronto para explorar o Aplicativo W1! 🏛️ Aplicativo W1 — Plataforma de Gestão Patrimonial

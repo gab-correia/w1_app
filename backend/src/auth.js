@@ -6,7 +6,7 @@ const pool = require('./db');
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'segredoUltraSeguro';
 
-// 🔐 Cadastro
+//  Cadastro
 router.post('/api/auth/register', async (req, res) => {
   const { name, email, password, userType } = req.body;
   console.log('📥 Dados recebidos no cadastro:', req.body);
@@ -54,12 +54,12 @@ router.post('/api/auth/register', async (req, res) => {
   }
 });
 
-// 🔐 Login
+//  Login
 router.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   console.log('🔐 Tentativa de login:', email);
 
-  // ✅ Caso especial: acesso direto para o consultor
+  // Caso especial: acesso direto para o consultor
   if (email === 'consultor@consultor' && password === 'w1') {
     const token = jwt.sign(
       { id: 'consultor', userType: 'consultant' },
@@ -76,7 +76,7 @@ router.post('/api/auth/login', async (req, res) => {
     });
   }
 
-  // ✅ Caso especial: acesso direto para o cliente
+  //  Caso especial: acesso direto para o cliente
   if (email === 'cliente@cliente' && password === 'w1') {
     const token = jwt.sign(
       { id: 'cliente', userType: 'client' },

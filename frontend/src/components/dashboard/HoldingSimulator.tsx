@@ -33,16 +33,19 @@ const HoldingSimulator:React.FC<HoldingSimulatorProps> = ({ mode, onUpdateResult
 
   // Salva os resultados calculados no localStorage ao clicar
   const handleSaveResults = () => {
-    localStorage.setItem(
-      "simulationResults",
-      JSON.stringify({
-        taxSavings: calculateTaxSavings(),
-        successionEfficiency: calculateSuccessionEfficiency()
-      })
-    );
-    // Redireciona para a página desejada
-    navigate('/Simulador');
+  localStorage.setItem(
+    "simulationResults",
+    JSON.stringify({
+      taxSavings: calculateTaxSavings(),
+      successionEfficiency: calculateSuccessionEfficiency()
+    })
+  );
+
+    onUpdateResults();  
+
+    navigate('/Simulador'); 
   };
+
 
   const handleSaveResultsSimulador = () => {
     localStorage.setItem(

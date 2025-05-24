@@ -40,18 +40,18 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     // Respostas automáticas para perguntas específicas
     const normalizedInput = inputText.toLowerCase();
 
-    if (normalizedInput.includes('onde posso encontrar o titulo de posse')) {
+    if (normalizedInput.includes('onde posso encontrar')) {
       const botReply: ChatMessage = {
-        text: "Olá! Para comprovar a titularidade dos imóveis, você pode acessar o cartório de registro da sua cidade. Para as aplicações financeiras, basta emitir o extrato atualizado pelo seu banco.",
+        text: "Olá! Para comprovar a titularidade dos imóveis, você pode acessar o cartório de registro da sua cidade. Acessando esse link voce pode verificar o cartório: https://cartorio.net/",
         isUser: false,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, botReply]);
-      setIsLoading(false);
+      setIsLoading(false);  
       return;
     }
 
-    if (normalizedInput.includes('me atualize sobre as notícias') || normalizedInput.includes('me atualize sobre as noticias')) {
+    if (normalizedInput.includes('me atualize sobre as notícias') || normalizedInput.includes('me atualize')) {
       const botReply: ChatMessage = {
         text: "Claro! Recentemente, o setor imobiliário brasileiro apresentou uma valorização média de 7,5% ao ano, especialmente em áreas urbanas de médio porte, impulsionada pela demanda por imóveis residenciais e comerciais. Além disso, a regulamentação sobre investimentos internacionais foi flexibilizada com a Resolução CMN nº 5.059/2023, permitindo que investidores locais possam alocar até 50% de seus ativos em fundos no exterior, sem necessidade de autorização prévia do Banco Central.",
         isUser: false,

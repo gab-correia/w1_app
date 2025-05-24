@@ -10,8 +10,8 @@ import { FileText, Upload, Eye, ArrowRight, X, Check } from "lucide-react";
 
 // Mock data
 const mockPendingDocuments = [
-  { id: 1, name: "Comprovante de Residência", status: "pending", requestedBy: "Sistema", requestDate: "2023-05-10", message: "O documento enviado está ilegível. Por favor, envie uma cópia mais clara." },
-  { id: 2, name: "Declaração de Imposto de Renda", status: "pending", requestedBy: "Maria Consultora", requestDate: "2023-05-12", message: "O documento está incompleto. Faltam as páginas 3 e 4." },
+  { id: 1, name: "Escritura de imóveis", status: "pending", requestedBy: "Sistema", requestDate: "2023-05-10", message: "O documento da escritura da casa em Pinheiros ainda não foi enviada" },
+  
 ];
 
 const mockApprovedDocuments = [
@@ -119,7 +119,7 @@ const DocumentosPage = () => {
                       </Button>
                       <Button size="sm" className="bg-w1-teal hover:bg-w1-teal/90" onClick={() => handleUploadClick(doc)}>
                         <Upload className="h-4 w-4 mr-2" />
-                        Reenviar documento
+                        Enviar documento
                       </Button>
                     </div>
                   </CardContent>

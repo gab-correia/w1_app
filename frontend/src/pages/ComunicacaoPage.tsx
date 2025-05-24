@@ -189,6 +189,46 @@ const ComunicacaoPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-w1-teal">Comunicação</h1>
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative"
+              onClick={() => setShowNotificacoes(!showNotificacoes)}
+            >
+              <Bell className="h-5 w-5" />
+              {notificacoes > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  {notificacoes}
+                </span>
+              )}
+            </Button>
+            {showNotificacoes && (
+              <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg z-50 border">
+                <div className="p-3 border-b flex justify-between items-center">
+                  <h3 className="font-medium">Notificações</h3>
+                  <Button variant="ghost" size="sm" onClick={limparNotificacoes}>
+                    Limpar
+                  </Button>
+                </div>
+                <div className="max-h-72 overflow-y-auto">
+                  {notificacoes > 0 ? (
+                    <div className="p-3 border-b hover:bg-gray-50">
+                      <p className="text-sm font-medium">Nova mensagem de Ana Beatriz</p>
+                      <p className="text-xs text-gray-500">Recebi sua mensagem. Vou analisar e retorno em breve.</p>
+                      <p className="text-xs text-gray-400 mt-1">Agora</p>
+                    </div>
+                  ) : (
+                    <div className="p-3 text-center text-gray-500 text-sm">
+                      Sem notificações
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <Tabs defaultValue="mensagens" className="w-full">

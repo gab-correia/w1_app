@@ -373,7 +373,11 @@ const HoldingDetalhesPage = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       {getDocumentStatusBadge(doc.status)}
-                      <Button variant="ghost" size="sm">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => navigate("/documentos")}
+                      >
                         Ver
                       </Button>
                     </div>

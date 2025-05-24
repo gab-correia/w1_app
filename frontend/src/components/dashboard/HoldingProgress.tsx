@@ -27,17 +27,8 @@ const EstagioHolding: React.FC = () => {
       tasks: [
         { name: 'Escolha do tipo societário', complete: true },
         { name: 'Definição do regime tributário', complete: true },
-        { name: 'Elaboração da minuta do contrato', complete: false },
-        { name: 'Análise de implicações fiscais', complete: false },
+        { name: 'Documentos iniciais', complete: false }
       ] 
-    },
-    { 
-      name: 'Coleta de Documentação',
-      complete: false,
-      tasks: [
-        { name: 'Documentos dos sócios', complete: false },
-        { name: 'Documentos dos bens', complete: false },
-      ]
     },
     { 
       name: 'Registro e Formalização',

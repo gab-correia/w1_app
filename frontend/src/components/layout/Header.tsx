@@ -83,8 +83,8 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleChat }) => {
               <div className="max-h-72 overflow-y-auto">
                 {notificacoes > 0 ? (
                   <div className="p-3 border-b hover:bg-gray-50">
-                    <p className="text-sm font-medium">Nova mensagem de Pedro Oliveira</p>
-                    <p className="text-xs text-gray-500">Aguardo seu feedback.</p>
+                    <p className="text-sm font-medium">Faz 30 dias que voce não conversa com João Paulo</p>
+                    <p className="text-xs text-gray-500">Envie uma mensagem</p>
                     <p className="text-xs text-gray-400 mt-1">5 horas atrás</p>
                   </div>
                 ) : (

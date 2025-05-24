@@ -75,34 +75,7 @@ const ConsultorComunicacaoPage = () => {
         remetente: 'cliente'
       },
       mensagens: [
-        {
-          id: 1,
-          texto: "Bom dia! Tudo bem? Gostaria de agendar uma reunião para discutirmos o planejamento patrimonial.",
-          remetente: 'cliente',
-          timestamp: new Date(Date.now() - 86400000 * 2),
-          lida: true
-        },
-        {
-          id: 2,
-          texto: "Olá, claro! Podemos agendar para esta semana. Quinta-feira às 15h seria um bom horário?",
-          remetente: 'consultor',
-          timestamp: new Date(Date.now() - 86400000 * 2 + 7200000),
-          lida: true
-        },
-        {
-          id: 3,
-          texto: "Perfeito! Está agendado para quinta-feira às 15h.",
-          remetente: 'cliente',
-          timestamp: new Date(Date.now() - 86400000),
-          lida: true
-        },
-        {
-          id: 4,
-          texto: "Os documentos para a constituição da holding foram enviados. Poderia confirmar o recebimento?",
-          remetente: 'consultor',
-          timestamp: new Date(Date.now() - 3600000),
-          lida: false
-        }
+       
       ],
       reunioes: [
         {

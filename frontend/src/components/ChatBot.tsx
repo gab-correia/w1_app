@@ -37,6 +37,32 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     setInputText("");
     setIsLoading(true);
 
+    // Respostas automáticas para perguntas específicas
+    const normalizedInput = inputText.toLowerCase();
+
+    if (normalizedInput.includes('onde posso encontrar o titulo de posse')) {
+      const botReply: ChatMessage = {
+        text: "Olá! Para comprovar a titularidade dos imóveis, você pode acessar o cartório de registro da sua cidade. Para as aplicações financeiras, basta emitir o extrato atualizado pelo seu banco.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botReply]);
+      setIsLoading(false);
+      return;
+    }
+
+    if (normalizedInput.includes('me atualize sobre as notícias') || normalizedInput.includes('me atualize sobre as noticias')) {
+      const botReply: ChatMessage = {
+        text: "Claro! Recentemente, o setor imobiliário brasileiro apresentou uma valorização média de 7,5% ao ano, especialmente em áreas urbanas de médio porte, impulsionada pela demanda por imóveis residenciais e comerciais. Além disso, a regulamentação sobre investimentos internacionais foi flexibilizada com a Resolução CMN nº 5.059/2023, permitindo que investidores locais possam alocar até 50% de seus ativos em fundos no exterior, sem necessidade de autorização prévia do Banco Central.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botReply]);
+      setIsLoading(false);
+      return;
+    }
+
+    // Se não for uma pergunta específica, faz a chamada ao Flowise
     fetch("http://localhost:3001/api/v1/prediction/88f7a3c1-4677-4cc7-94be-964628fd7722", {
       method: "POST",
       headers: {
@@ -65,7 +91,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         ]);
       })
       .finally(() => setIsLoading(false));
-  };
+};
+
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
